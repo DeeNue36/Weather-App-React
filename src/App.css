@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/** Logo and Heading Font */
+@font-face {
+  font-family: Bricolage Grotesque;
+  font-style: normal;
+  font-weight: 800;
+  src: url("./assets/fonts/Bricolage_Grotesque/static/BricolageGrotesque-Bold.ttf");
+}
+
+/** Body Fonts */
+/* Light Weight */
+@font-face {
+  font-family: DM Sans;
+  font-style: normal;
+  font-weight: 300;
+  src: url("./assets/fonts/DM_Sans/static/DMSans-Light.ttf");
+}
+
+/* Medium (Regular) Weight */
+@font-face {
+  font-family: DM Sans;
+  font-style: normal;
+  font-weight: 500;
+  src: url("./assets/fonts/DM_Sans/static/DMSans-Medium.ttf");
+}
+
+/* SemiBold Weight */
+@font-face {
+  font-family: DM Sans;
+  font-style: normal;
+  font-weight: 600;
+  src: url("./assets/fonts/DM_Sans/static/DMSans-SemiBold.ttf");
+}
+
+/* SemiBold Italic Weight */
+@font-face {
+  font-family: DM Sans;
+  font-style: italic;
+  font-weight: 600;
+  src: url("./assets/fonts/DM_Sans/static/DMSans-SemiBoldItalic.ttf");
+}
+
+/* Bold Weight */
+@font-face {
+  font-family: DM Sans;
+  font-style: normal;
+  font-weight: 700;
+  src: url("./assets/fonts/DM_Sans/static/DMSans-Bold.ttf");
+}

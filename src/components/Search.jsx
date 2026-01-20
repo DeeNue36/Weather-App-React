@@ -10,7 +10,7 @@ export const Search = ({ searchQuery, setSearchQuery }) => {
                     type="text"
                     placeholder='Search for a place...'
                     value={searchQuery}
-                    // onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
 
             </div>

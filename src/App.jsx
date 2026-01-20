@@ -1,6 +1,5 @@
-import { useState } from 'react'
 import { Header } from './components/Header'
-import { Search } from './components/Search'
+import { WeatherData } from './components/WeatherData'
 import './App.css'
 
 function App() {
@@ -10,7 +9,7 @@ function App() {
       <main className="container">
         <Header />
         <h1>How's the sky looking today?</h1>
-        <Search />
+        <WeatherData />
       </main>
     </>
   )

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Search = ({ searchQuery, setSearchQuery }) => {
+export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData }) => {
     return (
         <div className="search">
             <div className="search-input">
@@ -9,12 +9,16 @@ export const Search = ({ searchQuery, setSearchQuery }) => {
                 <input
                     type="text"
                     placeholder='Search for a place...'
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    value={searchCity}
+                    onChange={(e) => setSearchCity(e.target.value)}
                 />
 
             </div>
-            <button className="search-btn" onClick={setSearchQuery}>
+            <button 
+                className="search-btn" 
+                onClick={fetchWeatherData} 
+                disabled={isLoading}
+            >
                 Search
             </button>
         </div>

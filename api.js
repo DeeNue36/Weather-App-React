@@ -3,7 +3,9 @@ const API_URL = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude
 const BASE_CITY_API_URL = 'https://geocoding-api.open-meteo.com/v1/search?';
 // https://geocoding-api.open-meteo.com/v1/search?name=
 
+const REVERSE_GEOCODING_API_URL = 'https://nominatim.openstreetmap.org/reverse?';
+
 const BASE_WEATHER_API_URL = 'https://api.open-meteo.com/v1/forecast?';
 
 
-export { BASE_CITY_API_URL, BASE_WEATHER_API_URL };
+export { BASE_CITY_API_URL, REVERSE_GEOCODING_API_URL, BASE_WEATHER_API_URL };

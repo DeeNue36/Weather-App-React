@@ -1,8 +1,8 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Search } from './Search';
 import { Spinner } from './Spinner';
-import { BASE_CITY_API_URL, BASE_WEATHER_API_URL } from '../../api';
+import { BASE_CITY_API_URL, REVERSE_GEOCODING_API_URL, BASE_WEATHER_API_URL } from '../../api';
 import { useDebounce } from 'react-use';
 
 export const WeatherData = () => {
@@ -17,6 +17,7 @@ export const WeatherData = () => {
     }, 1000, [searchCity]);
 
 
+    //a. Get the user's location
     const getUserLocation = () => {
         return new Promise((resolve, reject) => {
             if (!navigator.geolocation) {
@@ -37,8 +38,38 @@ export const WeatherData = () => {
         });
     };
 
+    //b. Use user's location to get city/location name and country
+    const getCityFromCoords = async (lat, lon) => {
+        try {
+            const endpoint = `${REVERSE_GEOCODING_API_URL}lat=${lat}&lon=${lon}&format=json`;
 
-    const fetchWeatherData = async(query='', coords = null) => {
+            const response = await fetch(endpoint, {
+                headers: {
+                    'User-Agent': 'Weather App'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch city from coordinates');
+            }
+    
+            const data = await response.json();
+            if (data.address) {
+                const userLocation = data.address;
+                return {
+                    cityName: userLocation.city || userLocation.town || userLocation.village || userLocation.county,
+                    country: data.address.country
+                }
+            };
+            return { cityName: 'Unknown Location', country: '' };
+        } 
+        catch (error) {
+            console.error('Error fetching city from coordinates:', error);
+            return { cityName: 'Unknown Location', country: '' };
+        }
+    };
+
+
+    const fetchWeatherData = useCallback( async(query='', coords = null) => {
         setIsLoading(true);
         setErrorMessage('');
 
@@ -51,8 +82,11 @@ export const WeatherData = () => {
                 //Use provided coordinates (from geolocation)
                 latitude = coords.latitude;
                 longitude = coords.longitude;
-                name = 'Your Location';
-                country = '';
+
+                // Get actual city name from coordinates via reverse geocoding
+                const cityInfo = await getCityFromCoords(latitude, longitude);
+                name = cityInfo.cityName;
+                country = cityInfo.country;
             }
             else {
                 // Use the search query to get location/city
@@ -107,6 +141,7 @@ export const WeatherData = () => {
                 rain: weatherData.current.rain,
                 showers: weatherData.current.showers
             });
+            
         }
         catch (error) {
             console.error(`Error fetching weather data: ${error}`);
@@ -115,7 +150,18 @@ export const WeatherData = () => {
         finally {
             setIsLoading(false);
         }
-    }
+    }, []);
+
+    // Format for rendering time
+    const formatDate = (timeString) => {
+        const date = new Date(timeString);
+        return date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    };
 
     useEffect(() => {
         const initialWeather = async () => {
@@ -130,16 +176,19 @@ export const WeatherData = () => {
             }
         };
         initialWeather();
-    }, []);
+    }, [fetchWeatherData]);
 
 
     useEffect(() => {
-        fetchWeatherData(debouncedSearchCity);
-    }, [debouncedSearchCity]);
+        // Only fetch if there's a search query
+        if (debouncedSearchCity) {
+            fetchWeatherData(debouncedSearchCity);
+        }
+    }, [fetchWeatherData, debouncedSearchCity]);
 
-    useEffect(() => {
-        fetchWeatherData();
-    }, []);
+    // useEffect(() => {
+    //     fetchWeatherData();
+    // }, []);
 
 
     return (
@@ -147,49 +196,19 @@ export const WeatherData = () => {
             <h1>How's the sky looking today?</h1>
             <Search searchCity={searchCity} setSearchCity={setSearchCity} isLoading={isLoading} fetchWeatherData={fetchWeatherData}/>
 
-            {isLoading ? 
-                (<Spinner />) : 
-                    errorMessage ? 
-                (<p className='text-red-500'>{errorMessage}</p>) :
-                (
-                    <div className='weather-box'>
-                        <div className="weather-daily">
-                            <div className="location-weather">
-                    
-                            </div>
-                            <div className="location-weather-details">
-                                <div className="feels-like">
-                                </div>
-                                <div className="humidity">
-                                </div>
-                                <div className="wind-speed">
-                                </div>
-                                <div className="precipitation">
-                                </div>
-                            </div>
-                            <div className="location-daily-forecast">
-                                <p>Daily Forecast</p>
-                                <div className="days-forecast">
-                                    <div className="days-data">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="weather-hourly">
-                            <div className="location-hourly-forecast">
-                            </div>
-                        </div>
-                    </div>
-                )}
+            {isLoading && <Spinner />}
+            {/* {errorMessage && <p className='text-red-500'>{errorMessage}</p>} */}
+            
             <div className='weather-box'>
                 <div className="weather-daily">
                     <div className="location-weather">
                         <div className="city-and-date">
                             <h5 className="location">
-                                {}
+                                {/* Display user's location as fallback if search query is empty */}
+                                {weather.city}, {weather.country}
                             </h5>
                             <p className="date">
-                                {weather.dateTime}
+                                {formatDate(weather.dateTime)}
                             </p>
                         </div>
                         <div className="condition-and-temperature">
@@ -222,3 +241,39 @@ export const WeatherData = () => {
         </>
     )
 }
+
+
+// {isLoading ? 
+//                 (<Spinner />) : 
+//                     errorMessage ? 
+//                 (<p className='text-red-500'>{errorMessage}</p>) :
+//                 (
+//                     <div className='weather-box'>
+//                         <div className="weather-daily">
+//                             <div className="location-weather">
+                    
+//                             </div>
+//                             <div className="location-weather-details">
+//                                 <div className="feels-like">
+//                                 </div>
+//                                 <div className="humidity">
+//                                 </div>
+//                                 <div className="wind-speed">
+//                                 </div>
+//                                 <div className="precipitation">
+//                                 </div>
+//                             </div>
+//                             <div className="location-daily-forecast">
+//                                 <p>Daily Forecast</p>
+//                                 <div className="days-forecast">
+//                                     <div className="days-data">
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                         <div className="weather-hourly">
+//                             <div className="location-hourly-forecast">
+//                             </div>
+//                         </div>
+//                     </div>
+//                 )}

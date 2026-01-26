@@ -210,6 +210,8 @@ export const WeatherData = () => {
             
             <div className='weather-box'>
                 <div className="weather-daily">
+                    
+
                     <div className="location-weather">
                         <div className="city-and-date">
                             <h5 className="location">
@@ -223,28 +225,38 @@ export const WeatherData = () => {
                         <div className="condition-and-temperature">
                             <div className="condition">
                                 {weather.weatherCode !== undefined && (
-                                    <img 
-                                        src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'} 
+                                    <img
+                                        src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'}
                                         alt={weatherDescriptions(weather.weatherCode)}
-                                        className="weather-icon" 
+                                        className="weather-icon"
                                     />
-                                )} 
+                                )}
                             </div>
                             <div className="temperature">
-                                {weather.temperature}°
+                                <h1>{weather.temperature}°</h1>
                             </div>
                         </div>
                     </div>
+
                     <div className="location-weather-details">
                         <div className="feels-like">
+                            <p>Feels Like</p>
+                            <p>{weather.feelsLike}°</p>
                         </div>
                         <div className="humidity">
+                            <p>Humidity</p>
+                            <p>{weather.humidity}%</p>
                         </div>
                         <div className="wind-speed">
+                            <p>Wind Speed</p>
+                            <p>{weather.windSpeed} m/s</p>
                         </div>
                         <div className="precipitation">
+                            <p>Precipitation</p>
+                            <p>{weather.precipitation} mm</p>
                         </div>
                     </div>
+
                     <div className="location-daily-forecast">
                         <p>Daily Forecast</p>
                         <div className="days-forecast">
@@ -253,6 +265,7 @@ export const WeatherData = () => {
                         </div>
                     </div>
                 </div>
+
                 <div className="weather-hourly">
                     <div className="location-hourly-forecast">
                     </div>

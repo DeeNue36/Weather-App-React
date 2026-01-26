@@ -2,7 +2,9 @@ import React from 'react'
 import { useState, useEffect, useCallback } from 'react'
 import { Search } from './Search';
 import { Spinner } from './Spinner';
-import { BASE_CITY_API_URL, REVERSE_GEOCODING_API_URL, BASE_WEATHER_API_URL } from '../../api';
+import { BASE_CITY_API_URL, REVERSE_GEOCODING_API_URL, BASE_WEATHER_API_URL, BDC_API_KEY, BDC_REVERSE_GEOCODING_API_URL } from '../api';
+import { weatherIcons } from '../weatherIcons';
+import { weatherDescriptions } from '../weatherDescriptions';
 import { useDebounce } from 'react-use';
 
 export const WeatherData = () => {
@@ -17,7 +19,7 @@ export const WeatherData = () => {
     }, 1000, [searchCity]);
 
 
-    //a. Get the user's location
+    //A. Get the user's location coordinates using the browser
     const getUserLocation = () => {
         return new Promise((resolve, reject) => {
             if (!navigator.geolocation) {
@@ -38,29 +40,32 @@ export const WeatherData = () => {
         });
     };
 
-    //b. Use user's location to get city/location name and country
+    //B. Get the city/location name and country from user's coordinates using reverse geocoding
     const getCityFromCoords = async (lat, lon) => {
         try {
-            const endpoint = `${REVERSE_GEOCODING_API_URL}lat=${lat}&lon=${lon}&format=json`;
+            const bdc_endpoint = `${BDC_REVERSE_GEOCODING_API_URL}latitude=${lat}&longitude=${lon}&localityLanguage=en&key=${BDC_API_KEY}`; // Big Data Cloud reverse geocode API
 
-            const response = await fetch(endpoint, {
-                headers: {
-                    'User-Agent': 'Weather App'
-                }
-            });
-            if (!response.ok) {
+            // Alternatives
+            // const endpoint = `${REVERSE_GEOCODING_API_URL}lat=${lat}&lon=${lon}&format=json`;
+            // const bdc_endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+
+            let bdc_response = await fetch(bdc_endpoint);
+
+            if (!bdc_response.ok) {
+                console.log('Main API call failed, temporarily switching to free reverse-geocoding-client API');
+                const free_bdc_endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+                bdc_response = await fetch(free_bdc_endpoint);
+            }
+            if (!bdc_response.ok) {
                 throw new Error('Failed to fetch city from coordinates');
             }
     
-            const data = await response.json();
-            if (data.address) {
-                const userLocation = data.address;
-                return {
-                    cityName: userLocation.city || userLocation.town || userLocation.village || userLocation.county,
-                    country: data.address.country
-                }
+            const bdc_data = await bdc_response.json();
+            console.log(bdc_data);
+            return {
+                cityName: bdc_data.locality || bdc_data.city || bdc_data.principalSubdivision || 'Unknown Location',
+                country: bdc_data.countryName || '',
             };
-            return { cityName: 'Unknown Location', country: '' };
         } 
         catch (error) {
             console.error('Error fetching city from coordinates:', error);
@@ -73,26 +78,26 @@ export const WeatherData = () => {
         setIsLoading(true);
         setErrorMessage('');
 
-        //1. Get the city name from the search query
         try {
             let latitude, longitude, name, country;
 
-            // 2. Get the user's location which will be displayed as the initial city/location
+            // a. Get the user's location which will be displayed as the initial city/location
             if(coords) {
                 //Use provided coordinates (from geolocation)
                 latitude = coords.latitude;
                 longitude = coords.longitude;
 
-                // Get actual city name from coordinates via reverse geocoding
+                // Get city name from coordinates via reverse geocoding
                 const cityInfo = await getCityFromCoords(latitude, longitude);
                 name = cityInfo.cityName;
                 country = cityInfo.country;
             }
+            //b. Get the city name from the search query
             else {
-                // Use the search query to get location/city
+                //b(i). Use the search query to get location/city
                 const endpoint = `${BASE_CITY_API_URL}name=${encodeURIComponent(query)}&count=2`;
     
-                const cityResponse= await fetch(endpoint);
+                const cityResponse = await fetch(endpoint);
                 if(!cityResponse.ok) {
                     throw new Error('Failed to fetch city data');
                 }
@@ -111,7 +116,7 @@ export const WeatherData = () => {
                 country = city.country;
             }
 
-            //3. Get the weather data for the city
+            //c. Get the weather data for the city
             const weatherDataEndpoint = `${BASE_WEATHER_API_URL}latitude=${latitude}&longitude=${longitude}&current=is_day,apparent_temperature,relative_humidity_2m,temperature_2m,snowfall,showers,rain,precipitation,wind_speed_10m,weather_code&timezone=auto`; //OR &current_weather=true
 
             const weatherResponse = await fetch(weatherDataEndpoint);
@@ -127,10 +132,12 @@ export const WeatherData = () => {
                 setWeather({});
                 return;
             }
+
             setWeather({
                 city: name,
                 country: country,
                 dateTime: weatherData.current.time,
+                weatherCode: weatherData.current.weather_code,
                 isDay: weatherData.current.is_day,
                 temperature: weatherData.current.temperature_2m,
                 feelsLike: weatherData.current.apparent_temperature,
@@ -152,7 +159,7 @@ export const WeatherData = () => {
         }
     }, []);
 
-    // Format for rendering time
+    //d. Format for rendering time
     const formatDate = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -165,18 +172,24 @@ export const WeatherData = () => {
 
     useEffect(() => {
         const initialWeather = async () => {
+            if (weather.city) return;
             try {
                 const coords = await getUserLocation();
                 fetchWeatherData('', coords);
             }
             catch(error) {
+                console.log('Geolocation Failed, using fallback Location');
+                // Show message to the User
+                setErrorMessage('Could not access/understand your location. Showing weather for Houston');
+                // Clear error after a few seconds
+                setTimeout(() => setErrorMessage(''), 5000);
                 console.error('Could not get user location:', error);
                 //Fallback Location
-                fetchWeatherData('Texas');
+                fetchWeatherData('Houston');
             }
         };
         initialWeather();
-    }, [fetchWeatherData]);
+    }, [fetchWeatherData, weather.city]);
 
 
     useEffect(() => {
@@ -186,10 +199,6 @@ export const WeatherData = () => {
         }
     }, [fetchWeatherData, debouncedSearchCity]);
 
-    // useEffect(() => {
-    //     fetchWeatherData();
-    // }, []);
-
 
     return (
         <>
@@ -197,7 +206,7 @@ export const WeatherData = () => {
             <Search searchCity={searchCity} setSearchCity={setSearchCity} isLoading={isLoading} fetchWeatherData={fetchWeatherData}/>
 
             {isLoading && <Spinner />}
-            {/* {errorMessage && <p className='text-red-500'>{errorMessage}</p>} */}
+            {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
             
             <div className='weather-box'>
                 <div className="weather-daily">
@@ -212,7 +221,18 @@ export const WeatherData = () => {
                             </p>
                         </div>
                         <div className="condition-and-temperature">
-
+                            <div className="condition">
+                                {weather.weatherCode !== undefined && (
+                                    <img 
+                                        src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'} 
+                                        alt={weatherDescriptions(weather.weatherCode)}
+                                        className="weather-icon" 
+                                    />
+                                )} 
+                            </div>
+                            <div className="temperature">
+                                {weather.temperature}°
+                            </div>
                         </div>
                     </div>
                     <div className="location-weather-details">
@@ -277,3 +297,23 @@ export const WeatherData = () => {
 //                         </div>
 //                     </div>
 //                 )}
+
+
+
+// const response = await fetch(endpoint, {
+//     headers: {
+//         'User-Agent': 'Weather App'
+//     }
+// });
+// if (!response.ok) {
+//     throw new Error('Failed to fetch city from coordinates');
+// }
+
+// const data = await response.json();
+// if (data.address) {
+//     const userLocation = data.address;
+//     return {
+//         cityName: userLocation.city || userLocation.town || userLocation.village || userLocation.county,
+//         country: data.address.country
+//     }
+// };

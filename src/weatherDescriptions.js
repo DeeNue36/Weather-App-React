@@ -1,0 +1,33 @@
+export const weatherDescriptions = (code) => {
+    const descriptions = {
+        0: "Clear",
+        1: "Mainly clear",
+        2: "Partly cloudy",
+        3: "Overcast",
+        45: "Fog",
+        48: "Depositing rime fog",
+        51: "Light Drizzle",
+        53: "Moderate Drizzle",
+        55: "Dense Drizzle",
+        56: "Light Freezing Drizzle",
+        57: "Dense Freezing Drizzle",
+        61: "Slight Rain",
+        63: "Moderate Rain",
+        65: "Heavy Rain",
+        66: "Light Freezing Rain",
+        67: "Heavy Freezing Rain",
+        71: "Slight Snowfall",
+        73: "ModerateSnowfall",
+        75: "Heavy Snowfall",
+        77: "Snow grains",
+        80: "Slight Rain Showers",
+        81: "Moderate Rain Showers",
+        82: "Violent Rain Showers",
+        85: "Slight Snow Showers",
+        86: "Heavy Snow Showers",
+        95: "Slight/Moderate Thunderstorm",
+        96: "Thunderstorm with slight hail",
+        99: "Thunderstorm with heavy hail",
+    }
+    return descriptions[code] || 'Unknown';
+};

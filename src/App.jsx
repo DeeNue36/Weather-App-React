@@ -5,12 +5,10 @@ import './App.css'
 function App() {
 
   return (
-    <>
-      <main className="container">
-        <Header />
-        <WeatherData />
-      </main>
-    </>
+    <main>
+      <Header />
+      <WeatherData />
+    </main>
   )
 }
 

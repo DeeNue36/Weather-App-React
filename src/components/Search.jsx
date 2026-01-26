@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData }) => {
+export const Search = ({ searchCity, setSearchCity, isLoading }) => {
     return (
         <div className="search">
             <div className="search-input">
@@ -16,7 +16,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
             </div>
             <button 
                 className="search-btn" 
-                onClick={fetchWeatherData} 
+                onClick={setSearchCity} 
                 disabled={isLoading}
             >
                 Search

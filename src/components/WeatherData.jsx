@@ -10,6 +10,8 @@ import { useDebounce } from 'react-use';
 export const WeatherData = () => {
     const [searchCity, setSearchCity] = useState('');
     const [weather, setWeather] = useState({});
+    const [dailyForecast, setDailyForecast] = useState({});
+    const [hourlyForecast, setHourlyForecast] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [debouncedSearchCity, setDebouncedSearchCity] = useState('');
@@ -117,7 +119,7 @@ export const WeatherData = () => {
             }
 
             //c. Get the weather data for the city
-            const weatherDataEndpoint = `${BASE_WEATHER_API_URL}latitude=${latitude}&longitude=${longitude}&current=is_day,apparent_temperature,relative_humidity_2m,temperature_2m,snowfall,showers,rain,precipitation,wind_speed_10m,weather_code&timezone=auto`; //OR &current_weather=true
+            const weatherDataEndpoint = `${BASE_WEATHER_API_URL}latitude=${latitude}&longitude=${longitude}&forecast_days=7&daily=temperature_2m_min,temperature_2m_max,weather_code&hourly=,weather_code,temperature_2m&current=is_day,apparent_temperature,relative_humidity_2m,temperature_2m,snowfall,showers,rain,precipitation,wind_speed_10m,weather_code&timezone=auto`; //OR &current_weather=true
 
             const weatherResponse = await fetch(weatherDataEndpoint);
             if(!weatherResponse.ok) {
@@ -148,6 +150,23 @@ export const WeatherData = () => {
                 rain: weatherData.current.rain,
                 showers: weatherData.current.showers
             });
+
+            //d. Get daily and hourly forecasts
+            const dailyForecast = weatherData.daily.time.map((time, index) => ({
+                date: formatDate(time),
+                minTemp: weatherData.daily.temperature_2m_min[index],
+                maxTemp: weatherData.daily.temperature_2m_max[index],
+                weatherCode: weatherData.daily.weather_code[index]
+            }));
+
+            const hourlyForecast = weatherData.hourly.time.map((time, index) => ({
+                time: formatDate(time),
+                temperature: weatherData.hourly.temperature_2m[index],
+                weatherCode: weatherData.hourly.weather_code[index]
+            }));
+
+            setDailyForecast(dailyForecast);
+            setHourlyForecast(hourlyForecast);
             
         }
         catch (error) {
@@ -214,13 +233,13 @@ export const WeatherData = () => {
 
                     <div className="location-weather">
                         <div className="city-and-date">
-                            <h5 className="location">
+                            <h4 className="location">
                                 {/* Display user's location as fallback if search query is empty */}
                                 {weather.city}, {weather.country}
-                            </h5>
-                            <p className="date">
+                            </h4>
+                            <span className="date">
                                 {formatDate(weather.dateTime)}
-                            </p>
+                            </span>
                         </div>
                         <div className="condition-and-temperature">
                             <div className="condition">
@@ -241,19 +260,19 @@ export const WeatherData = () => {
                     <div className="location-weather-details">
                         <div className="feels-like">
                             <p>Feels Like</p>
-                            <p>{weather.feelsLike}°</p>
+                            <span>{weather.feelsLike}°</span>
                         </div>
                         <div className="humidity">
                             <p>Humidity</p>
-                            <p>{weather.humidity}%</p>
+                            <span>{weather.humidity}%</span>
                         </div>
                         <div className="wind-speed">
                             <p>Wind Speed</p>
-                            <p>{weather.windSpeed} m/s</p>
+                            <span>{weather.windSpeed} km/h</span>
                         </div>
                         <div className="precipitation">
                             <p>Precipitation</p>
-                            <p>{weather.precipitation} mm</p>
+                            <span>{weather.precipitation} mm</span>
                         </div>
                     </div>
 
@@ -261,6 +280,7 @@ export const WeatherData = () => {
                         <p>Daily Forecast</p>
                         <div className="days-forecast">
                             <div className="days-data">
+
                             </div>
                         </div>
                     </div>

@@ -1,13 +1,11 @@
-import { Header } from './components/Header'
-import { WeatherData } from './components/WeatherData'
+import { WeatherApp } from './components/WeatherApp'
 import './App.css'
 
 function App() {
 
   return (
     <main>
-      <Header />
-      <WeatherData />
+      <WeatherApp />
     </main>
   )
 }

@@ -58,7 +58,7 @@
   --color-neutral-800: hsl(243, 27%, 20%);
   --color-neutral-900: hsl(243, 96%, 9%);
 
-  --color-neutral-600: hsl(28, 100%, 52%);
+  --color-neutral-500: hsl(28, 100%, 52%);
 
   --color-blue-500: hsl(233, 67%, 56%);
   --color-blue-700: hsl(248, 70%, 36%);
@@ -79,6 +79,7 @@
     background: var(--color-neutral-900);
     font-optical-sizing: auto;
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -91,19 +92,26 @@
     font-size: var(--text-body-size);
     color: var(--color-neutral-0);
   }
+
+  main {
+    @apply flex flex-col items-center justify-center w-full p-10;
+  }
+}
+
+@layer utilities {
 }
 
 @layer components {
   .container {
-    @apply max-w-7xl mx-auto my-8 px-6 py-8 flex items-center justify-center flex-col gap-8;
+    @apply max-w-360 flex flex-col items-center justify-center;
 
-    & h1 {
-      @apply text-5xl text-white mb-6;
+    & > h1 {
+      @apply text-6xl mb-16;
     }
   }
 
   .navbar {
-    @apply flex flex-row items-center justify-between w-full mb-10;
+    @apply flex flex-row items-center justify-between w-full mb-18;
 
     & .logo {
       @apply flex flex-row items-center gap-2
@@ -119,7 +127,7 @@
   }
 
   .search {
-    @apply w-full max-w-xl flex flex-row items-center gap-4 mb-4;
+    @apply w-2/4 flex flex-row items-center gap-4 mb-12;
 
     & .search-input {
       @apply w-full flex gap-4 rounded-lg bg-neutral-800 text-neutral-0 py-3.5 px-4;
@@ -135,41 +143,93 @@
   }
 
   .weather-box {
-    @apply w-full flex flex-row items-center gap-4;
+    @apply w-full flex flex-row gap-8;
 
     & .weather-daily, .weather-hourly {
       @apply flex flex-col gap-4;
     }
 
     & .weather-daily {
-      @apply w-7/10;
-    }
+      @apply w-[67.5%];
 
-    & .weather-hourly {
-      @apply w-3/10;
-    }
+      & .location-weather {
+        @apply bg-desktop bg-no-repeat bg-size-[100%,auto] h-93 p-8 flex items-center justify-between;
 
-    & .location-weather {
-      @apply bg-desktop bg-no-repeat w-full h-full bg-cover rounded-lg p-4;
-    }
+        & .city-and-date {
+          @apply flex flex-col items-start gap-y-2;
 
-    & .location-weather-details {
-      @apply flex gap-4 mt-4 mb-6;
-    }
+          & h4.location {
+            @apply text-2xl;
+          }
 
-    & .feels-like, .humidity, .wind-speed, .precipitation {
-      @apply bg-neutral-800 w-full rounded-lg p-4;
-    }
+          & span.date {
+            @apply font-light text-neutral-200;
+          }
+        }
 
-    & .location-daily-forecast {
-      /* @apply ; */
+        & .condition-and-temperature {
+          @apply flex items-center;
 
-      & p {
-        @apply text-neutral-0 text-body-size mb-4;
+          & .condition img {
+            @apply w-32 h-32;
+          }
+
+          & .temperature h1 {
+            @apply text-[6.4rem] italic;
+          }
+        }
+      }
+
+      & .location-weather-details {
+        @apply flex gap-4 h-32 mt-4 mb-6;
+      }
+
+      & .feels-like, .humidity, .wind-speed, .precipitation {
+        @apply flex flex-col items-start justify-between bg-neutral-800 w-full rounded-lg p-4;
+
+        & p {
+          @apply text-neutral-300;
+        }
+
+        & span {
+          @apply text-4xl font-light;
+        }
+      }
+
+      & .location-daily-forecasts {
+        /* @apply flex gap-4; */
+
+        & p {
+          @apply text-body-size mb-4;
+        }
+
+        & .days-forecasts {
+          @apply flex gap-4 items-center justify-center;
+
+          & .day {
+            @apply flex flex-col items-center justify-between;
+          }
+
+          & .day .daily-weather-icon {
+            @apply w-24 h-24;
+          }
+
+          & .high-low-temp {
+            @apply flex justify-between w-full;
+
+            & p {
+              @apply mb-0;
+            }
+          }
+        }
       }
     }
 
-    & .days-data, .location-hourly-forecast {
+    & .weather-hourly {
+      @apply w-[30%] h-full;
+    }
+
+    & .day, .location-hourly-forecast {
       @apply bg-neutral-800 w-full rounded-lg p-4;
     }
   }

@@ -10,8 +10,8 @@ import { useDebounce } from 'react-use';
 export const WeatherData = () => {
     const [searchCity, setSearchCity] = useState('');
     const [weather, setWeather] = useState({});
-    const [dailyForecast, setDailyForecast] = useState({});
-    const [hourlyForecast, setHourlyForecast] = useState({});
+    const [dailyForecast, setDailyForecast] = useState([]);
+    const [hourlyForecast, setHourlyForecast] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [debouncedSearchCity, setDebouncedSearchCity] = useState('');
@@ -153,17 +153,20 @@ export const WeatherData = () => {
 
             //d. Get daily and hourly forecasts
             const dailyForecast = weatherData.daily.time.map((time, index) => ({
-                date: formatDate(time),
+                date: formatDailyForecastDate(time),
                 minTemp: weatherData.daily.temperature_2m_min[index],
                 maxTemp: weatherData.daily.temperature_2m_max[index],
                 weatherCode: weatherData.daily.weather_code[index]
             }));
+            console.log(dailyForecast);
 
             const hourlyForecast = weatherData.hourly.time.map((time, index) => ({
-                time: formatDate(time),
+                day: formatWeekday(time),
+                time: formatHourlyForecastTime(time),
                 temperature: weatherData.hourly.temperature_2m[index],
                 weatherCode: weatherData.hourly.weather_code[index]
             }));
+            console.log(hourlyForecast);
 
             setDailyForecast(dailyForecast);
             setHourlyForecast(hourlyForecast);
@@ -178,7 +181,9 @@ export const WeatherData = () => {
         }
     }, []);
 
-    //d. Format for rendering time
+    //d. Date and Time Formatting
+
+    // d(i). Date Formatting for City/Location
     const formatDate = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -189,6 +194,32 @@ export const WeatherData = () => {
         });
     };
 
+    // d(ii). Date Formatting for Daily Forecast
+    const formatDailyForecastDate = (timeString) => {
+        const date = new Date(timeString);
+        return date.toLocaleDateString('en-US', {
+            weekday: 'short',
+        });
+    };
+
+    //d(iii). Date and Time Formatting for Hourly Forecast
+    const formatWeekday = (timeString) => {
+        const date = new Date(timeString);
+        return date.toLocaleDateString('en-US', {
+            weekday: 'long',
+        });
+    };
+
+    const formatHourlyForecastTime = (timeString) => {
+        const date = new Date(timeString);
+        return date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            hour12: true,
+            ampm: true
+        });
+    };
+
+    //e. Final Render to get User Location and display weather data
     useEffect(() => {
         const initialWeather = async () => {
             if (weather.city) return;
@@ -235,10 +266,10 @@ export const WeatherData = () => {
                         <div className="city-and-date">
                             <h4 className="location">
                                 {/* Display user's location as fallback if search query is empty */}
-                                {weather.city}, {weather.country}
+                                {weather.city || 'Loading City...'}, {weather.country || 'Loading Country...'}
                             </h4>
                             <span className="date">
-                                {formatDate(weather.dateTime)}
+                                {weather.dateTime ? formatDate(weather.dateTime) : 'Loading Date...'}
                             </span>
                         </div>
                         <div className="condition-and-temperature">
@@ -276,18 +307,57 @@ export const WeatherData = () => {
                         </div>
                     </div>
 
-                    <div className="location-daily-forecast">
+                    <div className="location-daily-forecasts">
                         <p>Daily Forecast</p>
-                        <div className="days-forecast">
-                            <div className="days-data">
-
-                            </div>
+                        <div className="days-forecasts">
+                            {dailyForecast.map((day, index) => {
+                                return (
+                                    <div className="day" key={index}>
+                                        <p>{day.date}</p>
+                                        { day.weatherCode !== undefined && (
+                                            <img 
+                                                src={weatherIcons[day.weatherCode] || 'icon-sunny.webp'} 
+                                                alt={weatherDescriptions(day.weatherCode)}
+                                                className='daily-weather-icon'
+                                            />
+                                        )}
+                                        <div className="high-low-temp">
+                                            <p>{day.maxTemp}°</p>
+                                            <p>{day.minTemp}°</p>
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
 
                 <div className="weather-hourly">
                     <div className="location-hourly-forecast">
+                        <div className="weekday-hourly-forecast">
+                            <h5>Hourly Forecast</h5>
+                            <button className="weekday">
+                                {/* <span>{hourlyForecast[0].day}</span> */}
+                            </button>
+                        </div>
+                        <div className="hourly-weather-forecast">
+                            {hourlyForecast.map((hour, index) => {
+                                return (
+                                    <div className="weather-hour-card" key={index}>
+                                        <div className="hour">
+                                            { hour.weatherCode !== undefined && (
+                                                <img
+                                                    src={weatherIcons[hour.weatherCode] || 'icon-sunny.webp'}
+                                                    alt={weatherDescriptions(hour.weatherCode)}
+                                                    className='hourly-weather-icon'
+                                                />
+                                            )}
+                                        </div>
+                                        <span className="hour-temp">{hour.temperature}°</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>

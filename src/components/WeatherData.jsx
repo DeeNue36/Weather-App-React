@@ -12,6 +12,7 @@ export const WeatherData = () => {
     const [weather, setWeather] = useState({});
     const [dailyForecast, setDailyForecast] = useState([]);
     const [hourlyForecast, setHourlyForecast] = useState([]);
+    const [selectedDay, setSelectedDay] = useState(dailyForecast[0]?.date || '');
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [debouncedSearchCity, setDebouncedSearchCity] = useState('');
@@ -152,24 +153,31 @@ export const WeatherData = () => {
             });
 
             //d. Get daily and hourly forecasts
-            const dailyForecast = weatherData.daily.time.map((time, index) => ({
-                date: formatDailyForecastDate(time),
+            const getDailyForecast = weatherData.daily.time.map((time, index) => ({
+                date: formatDailyForecastDate(time), // "Wed", "Thu" etc - displayed in the daily forecast section, also used for filtering the hourly forecast for the selected day
+                longDate: formatWeekday(time), // "Wednesday" or "Thursday" etc - for displaying in the hourly section
                 minTemp: weatherData.daily.temperature_2m_min[index],
                 maxTemp: weatherData.daily.temperature_2m_max[index],
                 weatherCode: weatherData.daily.weather_code[index]
             }));
-            console.log(dailyForecast);
+            console.log(getDailyForecast);
 
-            const hourlyForecast = weatherData.hourly.time.map((time, index) => ({
-                day: formatWeekday(time),
+            const getHourlyForecast = weatherData.hourly.time.map((time, index) => ({
+                day: formatWeekday(time), // "Wednesday" or "Thursday"
+                shortDay: formatDailyForecastDate(time), // "Wed" or "Thu" etc - for matching with the daily forecast date to filter the hourly forecast for the selected day
                 time: formatHourlyForecastTime(time),
                 temperature: weatherData.hourly.temperature_2m[index],
                 weatherCode: weatherData.hourly.weather_code[index]
             }));
-            console.log(hourlyForecast);
+            console.log(getHourlyForecast);
 
-            setDailyForecast(dailyForecast);
-            setHourlyForecast(hourlyForecast);
+            setDailyForecast(getDailyForecast);
+            setHourlyForecast(getHourlyForecast);
+
+            // Auto select the first day for the hourly forecast when the weather data is fetched
+            if (getHourlyForecast.length > 0) {
+                setSelectedDay(getHourlyForecast[0].shortDay); // "Wed" 
+            }
             
         }
         catch (error) {
@@ -180,6 +188,7 @@ export const WeatherData = () => {
             setIsLoading(false);
         }
     }, []);
+
 
     //d. Date and Time Formatting
 
@@ -240,6 +249,21 @@ export const WeatherData = () => {
         };
         initialWeather();
     }, [fetchWeatherData, weather.city]);
+
+
+    // f. Handle Day Selection - useEffect that sets hourlyForecast to also set selectedDay:
+    useEffect(() => {
+        if (hourlyForecast.length > 0 && !selectedDay) {
+            setSelectedDay(hourlyForecast[0].day);
+        }
+    }, [hourlyForecast, selectedDay]);
+
+    //g. Get filtered hourly forecast for selected day
+    const getFilteredHourlyForecast = () => {
+        if (!selectedDay || hourlyForecast.length === 0) return hourlyForecast;
+
+        return hourlyForecast.filter(forecast => forecast.shortDay === selectedDay);
+    }
 
 
     useEffect(() => {
@@ -336,12 +360,24 @@ export const WeatherData = () => {
                     <div className="location-hourly-forecast">
                         <div className="weekday-hourly-forecast">
                             <h5>Hourly Forecast</h5>
-                            <button className="weekday">
-                                {/* <span>{hourlyForecast[0].day}</span> */}
-                            </button>
+                            <select 
+                                value={selectedDay}
+                                onChange={(e) => setSelectedDay(e.target.value)}
+                                id='weekday-dropdown'
+                                className="select-weekday"
+                            >
+                                {dailyForecast.map((day, index) => {
+                                    return (
+                                        <option key={index} value={day.date}>
+                                            {day.longDate}
+                                        </option>
+                                    )
+                                })}
+                                {/* <img src="icon-dropdown.svg" alt="dropdown icon" /> */}
+                            </select>
                         </div>
                         <div className="hourly-weather-forecast">
-                            {hourlyForecast.map((hour, index) => {
+                            {getFilteredHourlyForecast().map((hour, index) => {
                                 return (
                                     <div className="weather-hour-card" key={index}>
                                         <div className="hour">
@@ -352,6 +388,7 @@ export const WeatherData = () => {
                                                     className='hourly-weather-icon'
                                                 />
                                             )}
+                                            <span className="time">{hour.time}</span>
                                         </div>
                                         <span className="hour-temp">{hour.temperature}°</span>
                                     </div>

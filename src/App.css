@@ -234,7 +234,7 @@
         & .weekday-hourly-forecast {
           @apply flex items-center justify-between;
 
-          & .weekday {
+          & .select-weekday {
             @apply flex bg-neutral-600 gap-x-2 cursor-pointer rounded-lg py-2.5 px-5;
           }
         }
@@ -246,7 +246,7 @@
             @apply bg-neutral-700 flex items-center justify-between rounded-lg py-1 pr-4 pl-1;
 
             & .hour {
-              @apply flex items-center;
+              @apply flex items-center gap-2;
 
               & .hourly-weather-icon {
                 @apply w-14 h-14;

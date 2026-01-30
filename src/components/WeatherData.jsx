@@ -5,7 +5,8 @@ import { Spinner } from './Spinner';
 import { BASE_CITY_API_URL, BASE_WEATHER_API_URL, BDC_API_KEY, BDC_REVERSE_GEOCODING_API_URL } from '../api';
 import { weatherIcons } from '../weatherIcons';
 import { weatherDescriptions } from '../weatherDescriptions';
-
+import { DailyForecasts } from './DailyForecasts';
+import { CustomDropdown } from './CustomDropdown';
 import { useDebounce } from 'react-use';
 
 export const WeatherData = () => {
@@ -332,7 +333,12 @@ export const WeatherData = () => {
                         </div>
                     </div>
 
-                    <div className="location-daily-forecasts">
+                    <DailyForecasts 
+                        dailyForecasts={dailyForecast}
+                        weatherIcons={weatherIcons}
+                        weatherDescriptions={weatherDescriptions} 
+                    />
+                    {/* <div className="location-daily-forecasts">
                         <p>Daily Forecast</p>
                         <div className="days-forecasts">
                             {dailyForecast.map((day, index) => {
@@ -354,14 +360,14 @@ export const WeatherData = () => {
                                 )
                             })}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="weather-hourly">
                     <div className="location-hourly-forecast">
                         <div className="weekday-hourly-forecast">
                             <h5>Hourly Forecast</h5>
-                            <select 
+                            {/* <select 
                                 value={selectedDay}
                                 onChange={(e) => setSelectedDay(e.target.value)}
                                 id='weekday-dropdown'
@@ -374,7 +380,13 @@ export const WeatherData = () => {
                                         </option>
                                     )
                                 })}
-                            </select>
+                            </select> */}
+                            <CustomDropdown 
+                                // Display the selected day in long date format
+                                selected={dailyForecast.find(day => day.date === selectedDay)?.longDate || 'Select day'} 
+                                options={dailyForecast}
+                                onChange={(day) => setSelectedDay(day.date)}
+                            />
                         </div>
                         <div className="hourly-weather-forecast">
                             {getFilteredHourlyForecast().map((hour, index) => {

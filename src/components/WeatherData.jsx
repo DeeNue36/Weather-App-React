@@ -2,9 +2,10 @@ import React from 'react'
 import { useState, useEffect, useCallback } from 'react'
 import { Search } from './Search';
 import { Spinner } from './Spinner';
-import { BASE_CITY_API_URL, REVERSE_GEOCODING_API_URL, BASE_WEATHER_API_URL, BDC_API_KEY, BDC_REVERSE_GEOCODING_API_URL } from '../api';
+import { BASE_CITY_API_URL, BASE_WEATHER_API_URL, BDC_API_KEY, BDC_REVERSE_GEOCODING_API_URL } from '../api';
 import { weatherIcons } from '../weatherIcons';
 import { weatherDescriptions } from '../weatherDescriptions';
+
 import { useDebounce } from 'react-use';
 
 export const WeatherData = () => {
@@ -373,7 +374,6 @@ export const WeatherData = () => {
                                         </option>
                                     )
                                 })}
-                                {/* <img src="icon-dropdown.svg" alt="dropdown icon" /> */}
                             </select>
                         </div>
                         <div className="hourly-weather-forecast">
@@ -401,59 +401,3 @@ export const WeatherData = () => {
         </>
     )
 }
-
-
-// {isLoading ? 
-//                 (<Spinner />) : 
-//                     errorMessage ? 
-//                 (<p className='text-red-500'>{errorMessage}</p>) :
-//                 (
-//                     <div className='weather-box'>
-//                         <div className="weather-daily">
-//                             <div className="location-weather">
-                    
-//                             </div>
-//                             <div className="location-weather-details">
-//                                 <div className="feels-like">
-//                                 </div>
-//                                 <div className="humidity">
-//                                 </div>
-//                                 <div className="wind-speed">
-//                                 </div>
-//                                 <div className="precipitation">
-//                                 </div>
-//                             </div>
-//                             <div className="location-daily-forecast">
-//                                 <p>Daily Forecast</p>
-//                                 <div className="days-forecast">
-//                                     <div className="days-data">
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                         <div className="weather-hourly">
-//                             <div className="location-hourly-forecast">
-//                             </div>
-//                         </div>
-//                     </div>
-//                 )}
-
-
-
-// const response = await fetch(endpoint, {
-//     headers: {
-//         'User-Agent': 'Weather App'
-//     }
-// });
-// if (!response.ok) {
-//     throw new Error('Failed to fetch city from coordinates');
-// }
-
-// const data = await response.json();
-// if (data.address) {
-//     const userLocation = data.address;
-//     return {
-//         cityName: userLocation.city || userLocation.town || userLocation.village || userLocation.county,
-//         country: data.address.country
-//     }
-// };

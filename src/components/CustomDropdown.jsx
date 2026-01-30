@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 
 export const CustomDropdown = ({options, selected, onChange}) => {
     const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef(null); // Reference to the dropdown element
 
     // Close the dropdown when clicking outside
     useEffect(() => {
@@ -31,17 +31,17 @@ export const CustomDropdown = ({options, selected, onChange}) => {
                 className="days-dropdown-selected" 
                 onClick={() => setIsOpen(!isOpen)}
             >
-                {selected || 'Select a day'}
+                {selected || 'Select day'}
             </span>
             {isOpen && (
                 <ul className="days-dropdown-options">
-                    {options.map((option) => (
+                    {options.map((option, index) => (
                         <li
-                            key={option}
+                            key={index}
                             className="day-dropdown-option"
                             onClick={() => handleOptionClick(option)}
                         >
-                            {option}
+                            {option.longDate}
                         </li>
                     ))}
                 </ul>

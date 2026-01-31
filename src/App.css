@@ -63,6 +63,8 @@
   --color-blue-500: hsl(233, 67%, 56%);
   --color-blue-700: hsl(248, 70%, 36%);
 
+  --shadow-dropdown: -8px 8px 12px 8px rgba(39, 37, 65, 0.8);
+
   --font-body: DM Sans, sans-serif;
   --font-logo-heading: Bricolage Grotesque, sans-serif;
   --text-body-size: 18px;
@@ -185,7 +187,7 @@
       }
 
       & .feels-like, .humidity, .wind-speed, .precipitation {
-        @apply flex flex-col items-start justify-between bg-neutral-800 w-full rounded-lg p-4;
+        @apply flex flex-col items-start justify-between bg-neutral-800 w-full rounded-lg p-4 border border-neutral-600;
 
         & p {
           @apply text-neutral-300;
@@ -207,7 +209,7 @@
           @apply flex gap-4 items-center justify-center;
 
           & .day {
-            @apply flex flex-col items-center justify-between p-4;
+            @apply flex flex-col items-center justify-between gap-2 p-4 border border-neutral-600;
           }
 
           & .day .daily-weather-icon {
@@ -234,16 +236,32 @@
         & .weekday-hourly-forecast {
           @apply flex items-center justify-between;
 
-          & .select-weekday {
-            @apply flex bg-neutral-600 gap-x-2 cursor-pointer rounded-lg py-2.5 px-5;
+          & .days-dropdown {
+            @apply w-40 relative;
+          }
+
+          & .days-dropdown-selected {
+            @apply bg-neutral-600 flex items-center justify-between cursor-pointer rounded-lg py-2.5 px-4 text-neutral-0 font-body text-body-size;
+
+            & img {
+              @apply w-4 h-4;
+            }
+          }
+
+          & .days-dropdown-options {
+            @apply bg-neutral-800 absolute text-neutral-0 py-2 px-2 cursor-pointer font-body text-body-size flex flex-col gap-2.5 w-54 z-1 top-16 right-0 rounded-lg shadow-(--shadow-dropdown) border-neutral-600 border;
+
+            & .day-dropdown-option {
+              @apply hover:bg-neutral-700 hover:rounded-lg px-2 py-2;
+            }
           }
         }
 
         & .hourly-weather-forecast {
-          @apply flex flex-col gap-y-4.5 mt-8;
+          @apply flex flex-col gap-y-4.5 mt-5;
 
           & .weather-hour-card {
-            @apply bg-neutral-700 flex items-center justify-between rounded-lg py-1 pr-4 pl-1;
+            @apply bg-neutral-700 flex items-center justify-between rounded-lg py-1 pr-4 pl-1 border border-neutral-600;
 
             & .hour {
               @apply flex items-center gap-2;
@@ -258,7 +276,7 @@
     }
 
     & .day, .location-hourly-forecast {
-      @apply bg-neutral-800 w-full rounded-lg;
+      @apply bg-neutral-800 w-full rounded-2xl;
     }
   }
 }

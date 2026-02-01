@@ -29,8 +29,34 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
         <div className="units-dropdown" ref={dropdownRef}>
             {isOpen && (
                 <div className="units-dropdown-options">
-                    <span className="units-dropdown-option">Celsius</span>
-                    <span className="units-dropdown-option">Fahrenheit</span>
+                    <span className="units-dropdown-option">Switch to Imperial</span>
+                    {/* <span className="units-dropdown-option">Switch to Metric</span> */}
+
+                    <div className="metrics">
+                        <div className="temperature-metric">
+                            <p className="metrics-heading">
+                                Temperature
+                            </p>
+                            <span className="metric">Celsius(°C)</span>
+                            <span className="metric">Fahrenheit(°F)</span>
+                        </div>
+                        <hr/>
+                        <div className="wind-speed-metric">
+                            <p className="metrics-heading">
+                                Wind Speed
+                            </p>
+                            <span className="metric">km/h</span>
+                            <span className="metric">mph</span>
+                        </div>
+                        <hr/>
+                        <div className="precipitation-metric">
+                            <p className="metrics-heading">
+                                Precipitation
+                            </p>
+                            <span className="metric">Millimeters(mm)</span>
+                            <span className="metric">Inches(in)</span>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

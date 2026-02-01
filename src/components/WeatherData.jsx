@@ -6,7 +6,7 @@ import { BASE_CITY_API_URL, BASE_WEATHER_API_URL, BDC_API_KEY, BDC_REVERSE_GEOCO
 import { weatherIcons } from '../weatherIcons';
 import { weatherDescriptions } from '../weatherDescriptions';
 import { DailyForecasts } from './DailyForecasts';
-import { CustomDropdown } from './CustomDropdown';
+import { DaysDropdown } from './DaysDropdown';
 import { useDebounce } from 'react-use';
 
 export const WeatherData = () => {
@@ -286,8 +286,8 @@ export const WeatherData = () => {
             
             <div className='weather-box'>
                 <div className="weather-daily">
-                    
 
+                    {/* TODO: Turn this into a component */}
                     <div className="location-weather">
                         <div className="city-and-date">
                             <h4 className="location">
@@ -314,6 +314,7 @@ export const WeatherData = () => {
                         </div>
                     </div>
 
+                    {/* TODO: Turn this into a component */}
                     <div className="location-weather-details">
                         <div className="feels-like">
                             <p>Feels Like</p>
@@ -338,35 +339,12 @@ export const WeatherData = () => {
                         weatherIcons={weatherIcons}
                         weatherDescriptions={weatherDescriptions} 
                     />
-                    {/* <div className="location-daily-forecasts">
-                        <p>Daily Forecast</p>
-                        <div className="days-forecasts">
-                            {dailyForecast.map((day, index) => {
-                                return (
-                                    <div className="day" key={index}>
-                                        <p>{day.date}</p>
-                                        { day.weatherCode !== undefined && (
-                                            <img 
-                                                src={weatherIcons[day.weatherCode] || 'icon-sunny.webp'} 
-                                                alt={weatherDescriptions(day.weatherCode)}
-                                                className='daily-weather-icon'
-                                            />
-                                        )}
-                                        <div className="high-low-temp">
-                                            <p>{day.maxTemp}°</p>
-                                            <p>{day.minTemp}°</p>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div> */}
                 </div>
 
                 <div className="weather-hourly">
                     <div className="location-hourly-forecast">
                         <div className="weekday-hourly-forecast">
-                            <h5>Hourly Forecast</h5>
+                            <p>Hourly Forecast</p>
                             {/* <select 
                                 value={selectedDay}
                                 onChange={(e) => setSelectedDay(e.target.value)}
@@ -381,7 +359,7 @@ export const WeatherData = () => {
                                     )
                                 })}
                             </select> */}
-                            <CustomDropdown 
+                            <DaysDropdown 
                                 // Display the selected day in long date format
                                 selected={dailyForecast.find(day => day.date === selectedDay)?.longDate || 'Select day'} 
                                 options={dailyForecast}

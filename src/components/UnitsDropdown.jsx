@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import { useEffect, useRef } from 'react';
 
 export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
     const dropdownRef = useRef(null); // Reference to the dropdown element
@@ -37,8 +37,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                             <p className="metrics-heading">
                                 Temperature
                             </p>
-                            <span className="metric">Celsius(°C)</span>
-                            <span className="metric">Fahrenheit(°F)</span>
+                            <span className="metric">Celsius (°C)</span>
+                            <span className="metric">Fahrenheit (°F)</span>
                         </div>
                         <hr/>
                         <div className="wind-speed-metric">
@@ -53,8 +53,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                             <p className="metrics-heading">
                                 Precipitation
                             </p>
-                            <span className="metric">Millimeters(mm)</span>
-                            <span className="metric">Inches(in)</span>
+                            <span className="metric">Millimeters (mm)</span>
+                            <span className="metric">Inches (in)</span>
                         </div>
                     </div>
                 </div>

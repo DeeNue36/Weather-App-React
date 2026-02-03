@@ -281,7 +281,7 @@
       @apply w-[30%] h-full;
 
       & .location-hourly-forecast {
-        @apply p-6 overflow-y-scroll;
+        @apply p-6 h-full overflow-y-auto;  
 
         & .weekday-hourly-forecast {
           @apply flex items-center justify-between;
@@ -308,7 +308,7 @@
         }
 
         & .hourly-weather-forecast {
-          @apply flex flex-col gap-y-4.5 mt-5;
+          @apply flex flex-col gap-y-4.5 mt-5 overflow-y-scroll h-full;
 
           & .weather-hour-card {
             @apply bg-neutral-700 flex items-center justify-between rounded-lg py-1 pr-4 pl-1 border border-neutral-600;

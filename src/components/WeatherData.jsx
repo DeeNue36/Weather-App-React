@@ -138,6 +138,7 @@ export const WeatherData = () => {
                 return;
             }
 
+            // Set the weather data
             setWeather({
                 city: name,
                 country: country,
@@ -151,10 +152,16 @@ export const WeatherData = () => {
                 precipitation: weatherData.current.precipitation,
                 snowfall: weatherData.current.snowfall,
                 rain: weatherData.current.rain,
-                showers: weatherData.current.showers
+                showers: weatherData.current.showers,
+                // units
+                temperatureUnit: weatherData.current_units.temperature_2m,
+                windSpeedUnit: weatherData.current_units.wind_speed_10m,
+                precipitationUnit: weatherData.current_units.precipitation,
+                humidityUnit: weatherData.current_units.relative_humidity_2m
             });
 
             //d. Get daily and hourly forecasts
+            //d(i). Get daily forecast from weatherData
             const getDailyForecast = weatherData.daily.time.map((time, index) => ({
                 date: formatDailyForecastDate(time), // "Wed", "Thu" etc - displayed in the daily forecast section, also used for filtering the hourly forecast for the selected day
                 longDate: formatWeekday(time), // "Wednesday" or "Thursday" etc - for displaying in the hourly section
@@ -164,6 +171,7 @@ export const WeatherData = () => {
             }));
             console.log(getDailyForecast);
 
+            //d(ii). Get hourly forecast from weatherData
             const getHourlyForecast = weatherData.hourly.time.map((time, index) => ({
                 day: formatWeekday(time), // "Wednesday" or "Thursday"
                 shortDay: formatDailyForecastDate(time), // "Wed" or "Thu" etc - for matching with the daily forecast date to filter the hourly forecast for the selected day
@@ -298,6 +306,7 @@ export const WeatherData = () => {
                                 {weather.dateTime ? formatDate(weather.dateTime) : 'Loading Date...'}
                             </span>
                         </div>
+
                         <div className="condition-and-temperature">
                             <div className="condition">
                                 {weather.weatherCode !== undefined && (
@@ -318,19 +327,27 @@ export const WeatherData = () => {
                     <div className="location-weather-details">
                         <div className="feels-like">
                             <p>Feels Like</p>
-                            <span>{weather.feelsLike}°</span>
+                            <span>
+                                {weather.feelsLike}{weather.temperatureUnit}
+                            </span>
                         </div>
                         <div className="humidity">
                             <p>Humidity</p>
-                            <span>{weather.humidity}%</span>
+                            <span>
+                                {weather.humidity}{weather.humidityUnit}
+                            </span>
                         </div>
                         <div className="wind-speed">
                             <p>Wind Speed</p>
-                            <span>{weather.windSpeed} km/h</span>
+                            <span>
+                                {weather.windSpeed} {weather.windSpeedUnit}
+                            </span>
                         </div>
                         <div className="precipitation">
                             <p>Precipitation</p>
-                            <span>{weather.precipitation} mm</span>
+                            <span>
+                                {weather.precipitation} {weather.precipitationUnit}
+                            </span>
                         </div>
                     </div>
 

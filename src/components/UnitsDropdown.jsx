@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
+export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChangeWeatherUnits }) => {
     const dropdownRef = useRef(null); // Reference to the dropdown element
 
     // Close the dropdown when clicking outside
@@ -29,33 +29,82 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
         <div className="units-dropdown" ref={dropdownRef}>
             {isOpen && (
                 <div className="units-dropdown-options">
-                    <span className="units-dropdown-option">Switch to Imperial</span>
-                    {/* <span className="units-dropdown-option">Switch to Metric</span> */}
+                    <span 
+                        className="units-dropdown-option" 
+                        onClick={onChangeWeatherUnits}
+                    >
+                        Switch to {units.temperature === 'celsius' ? 'Imperial' : 'Metric'}
+                    </span>
 
                     <div className="metrics">
+
                         <div className="temperature-metric">
                             <p className="metrics-heading">
                                 Temperature
                             </p>
-                            <span className="metric">Celsius (°C)</span>
-                            <span className="metric">Fahrenheit (°F)</span>
+                            <span 
+                                className="metric"
+                                onClick={() => onUnitChange('temperature', 'celsius')}
+                            >
+                                Celsius (°C)
+                                {units.temperature === 'celsius' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                            </span>
+
+                            <span 
+                                className="metric"
+                                onClick={() => onUnitChange('temperature', 'fahrenheit')}
+                            >
+                                Fahrenheit (°F)
+                                {units.temperature === 'fahrenheit' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                            </span>
                         </div>
+
                         <hr/>
+
                         <div className="wind-speed-metric">
                             <p className="metrics-heading">
                                 Wind Speed
                             </p>
-                            <span className="metric">km/h</span>
-                            <span className="metric">mph</span>
+                            <span 
+                                className="metric"
+                                onClick={() => onUnitChange('wind', 'km/h')}
+                            >
+                                km/h
+                                {units.wind === 'km/h' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                            </span>
+
+                            <span 
+                                className="metric"
+                                onClick={() => onUnitChange('wind', 'mph')}
+                            >
+                                mph
+                                {units.wind === 'mph' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                            </span>
                         </div>
+
                         <hr/>
+
                         <div className="precipitation-metric">
                             <p className="metrics-heading">
                                 Precipitation
                             </p>
-                            <span className="metric">Millimeters (mm)</span>
-                            <span className="metric">Inches (in)</span>
+                            <span 
+                                className="metric"
+                                onClick={() => onUnitChange('precipitation', 'mm')}
+                            >
+                                Millimeters (mm)
+                                {units.precipitation === 'mm' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                            </span>
+
+                            <span 
+                                className="metric"
+                                onClick={() => onUnitChange('precipitation', 'in')}
+                            >
+                                Inches (in)
+                                {units.precipitation === 'in' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                            </span>
                         </div>
+
                     </div>
                 </div>
             )}

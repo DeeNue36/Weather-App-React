@@ -154,7 +154,7 @@ export const WeatherData = () => {
                 rain: weatherData.current.rain,
                 showers: weatherData.current.showers,
                 // units
-                temperatureUnit: weatherData.current_units.temperature_2m,
+                temperatureUnit: weatherData.current_units.temperature_2m.slice(0, 1),
                 windSpeedUnit: weatherData.current_units.wind_speed_10m,
                 precipitationUnit: weatherData.current_units.precipitation,
                 humidityUnit: weatherData.current_units.relative_humidity_2m
@@ -318,7 +318,7 @@ export const WeatherData = () => {
                                 )}
                             </div>
                             <div className="temperature">
-                                <h1>{weather.temperature}°</h1>
+                                <h1>{weather.temperature}{weather.temperatureUnit}</h1>
                             </div>
                         </div>
                     </div>
@@ -354,7 +354,8 @@ export const WeatherData = () => {
                     <DailyForecasts 
                         dailyForecasts={dailyForecast}
                         weatherIcons={weatherIcons}
-                        weatherDescriptions={weatherDescriptions} 
+                        weatherDescriptions={weatherDescriptions}
+                        weatherUnit={weather.temperatureUnit} 
                     />
                 </div>
 
@@ -397,7 +398,7 @@ export const WeatherData = () => {
                                             )}
                                             <span className="time">{hour.time}</span>
                                         </div>
-                                        <span className="hour-temp">{hour.temperature}°</span>
+                                        <span className="hour-temp">{hour.temperature}{weather.temperatureUnit}</span>
                                     </div>
                                 )
                             })}

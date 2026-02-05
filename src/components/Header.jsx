@@ -28,20 +28,6 @@ export const Header = ({ units, setUnits }) => {
         });
     };
 
-    // Conversion functions
-    // const convertTemperature = (temp) => {
-    //     if (units.temperature === 'fahrenheit') {
-    //         return Math.round((temp * 9/5) + 32)
-    //     }
-    //     return Math.round(temp);
-    // };
-    // const celsiusToFahrenheit = (celsius) => (celsius * 9 / 5) + 32;
-    // const fahrenheitToCelsius = (fahrenheit) => (fahrenheit - 32) * 5 / 9;
-    // const kmhToMps = (kmh) => kmh / 3.6;
-    // const mpsToKmh = (mps) => mps * 3.6;
-    // const mmToInches = (mm) => mm / 25.4;
-    // const inchesToMm = (inches) => inches * 25.4;
-
     return (
         <nav className="navbar">
             <div className="logo">

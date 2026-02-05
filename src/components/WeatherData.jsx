@@ -22,7 +22,7 @@ const convertTemperature = (temp, unit) => {
 //e(ii) Wind Speed Conversion
 const convertWindSpeed = (speed, unit) => {
     if (unit === 'mph') {
-        return (speed * 0.621371).toFixed(1);
+        return (speed * 0.621371);
     }
     return speed;
 };
@@ -30,7 +30,7 @@ const convertWindSpeed = (speed, unit) => {
 //e(iii) Precipitation Conversion
 const convertPrecipitation = (precipitation, unit) => {
     if (unit === 'in') {
-        return (precipitation / 25.4).toFixed(2);
+        return (precipitation / 25.4);
     }
     return precipitation;
 };

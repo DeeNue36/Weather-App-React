@@ -32,7 +32,7 @@ export const DaysDropdown = ({options, selected, onChange}) => {
                 className="days-dropdown-selected" 
                 onClick={() => setIsOpen(!isOpen)}
             >
-                {selected || 'Select day'}
+                {selected || 'Select a day'}
                 <img src="/icon-dropdown.svg" alt="dropdown icon" />
             </span>
             {isOpen && (

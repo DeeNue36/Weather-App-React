@@ -1,4 +1,4 @@
-export const DailyForecasts = ({ dailyForecasts, weatherIcons, weatherDescriptions, weatherUnit }) => {
+export const DailyForecasts = ({ dailyForecasts, weatherIcons, weatherDescriptions, weatherUnit, convertMinTemp, convertMaxTemp }) => {
     return (
         <div className="location-daily-forecasts">
             <p>Daily Forecast</p>
@@ -16,10 +16,10 @@ export const DailyForecasts = ({ dailyForecasts, weatherIcons, weatherDescriptio
                             )}
                             <div className="high-low-temp">
                                 <p>
-                                    {day.maxTemp}{weatherUnit}
+                                    {convertMinTemp(day.maxTemp)}{weatherUnit}
                                 </p>
                                 <p>
-                                    {day.minTemp}{weatherUnit}
+                                    {convertMaxTemp(day.minTemp)}{weatherUnit}
                                 </p>
                             </div>
                         </div>

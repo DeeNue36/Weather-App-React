@@ -22,7 +22,7 @@ const convertTemperature = (temp, unit) => {
 //e(ii) Wind Speed Conversion
 const convertWindSpeed = (speed, unit) => {
     if (unit === 'mph') {
-        return (speed * 0.621371);
+        return (speed * 0.621371).toFixed(0);
     }
     return speed;
 };
@@ -30,7 +30,7 @@ const convertWindSpeed = (speed, unit) => {
 //e(iii) Precipitation Conversion
 const convertPrecipitation = (precipitation, unit) => {
     if (unit === 'in') {
-        return (precipitation / 25.4);
+        return (precipitation / 25.4).toFixed(0);
     }
     return precipitation;
 };
@@ -179,7 +179,7 @@ export const WeatherData = ({ units }) => {
                 snowfall: weatherData.current.snowfall,
                 rain: weatherData.current.rain,
                 showers: weatherData.current.showers,
-                // units
+                // weather units
                 temperatureUnit: weatherData.current_units.temperature_2m.slice(0, 1),
                 windSpeedUnit: weatherData.current_units.wind_speed_10m,
                 precipitationUnit: weatherData.current_units.precipitation,
@@ -187,6 +187,7 @@ export const WeatherData = ({ units }) => {
             });
 
             //d. Get daily and hourly forecasts
+
             //d(i). Get daily forecast from weatherData
             const getDailyForecast = weatherData.daily.time.map((time, index) => ({
                 date: formatDailyForecastDate(time), // "Wed", "Thu" etc - displayed in the daily forecast section, also used for filtering the hourly forecast for the selected day
@@ -210,7 +211,7 @@ export const WeatherData = ({ units }) => {
             setDailyForecast(getDailyForecast);
             setHourlyForecast(getHourlyForecast);
 
-            // Auto select the first day for the hourly forecast when the weather data is fetched
+            // Auto select the current day and set it to the selected day state when the weather data is fetched
             if (getHourlyForecast.length > 0) {
                 setSelectedDay(getHourlyForecast[0].shortDay); // "Wed" 
             }
@@ -247,7 +248,9 @@ export const WeatherData = ({ units }) => {
         });
     };
 
-    //f(iii). Date and Time Formatting for Hourly Forecast
+    // f(iii). Date and Time Formatting for Hourly Forecast
+
+    // f(iii)(a) Date Formatting for Hourly Forecast
     const formatWeekday = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -255,6 +258,7 @@ export const WeatherData = ({ units }) => {
         });
     };
 
+    // f(iii)(b) Time Formatting for Hourly Forecast
     const formatHourlyForecastTime = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleTimeString('en-US', {
@@ -264,12 +268,14 @@ export const WeatherData = ({ units }) => {
         });
     };
 
-    //g. Final Render to get User Location and display weather data
+    //g. First Render to get User Location and display weather data
     useEffect(() => {
         const initialWeather = async () => {
             if (weather.city) return;
+
             try {
-                const coords = await getUserLocation();
+                // Call getUserLocation to get users location coordinates
+                const coords = await getUserLocation(); 
                 fetchWeatherData('', coords);
             }
             catch(error) {
@@ -287,7 +293,7 @@ export const WeatherData = ({ units }) => {
     }, [fetchWeatherData, weather.city]);
 
 
-    // h. Handle Day Selection - useEffect that sets hourlyForecast to also set selectedDay:
+    // h. Handle Day Selection - set selectedDay to the first day of the hourly forecast if no day is selected:
     useEffect(() => {
         if (hourlyForecast.length > 0 && !selectedDay) {
             setSelectedDay(hourlyForecast[0].day);
@@ -314,7 +320,7 @@ export const WeatherData = ({ units }) => {
     // Calculated on every render based on the units prop
     const displayTemperature = convertTemperature(weather.temperature || 0, units.temperature);
     const displayFeelsLike = convertTemperature(weather.feelsLike || 0, units.temperature);
-    const displayWindSpeed = convertWindSpeed(weather.wind || 0, units.wind);
+    const displayWindSpeed = convertWindSpeed(weather.windSpeed || 0, units.wind);
     const displayPrecipitation = convertPrecipitation(weather.precipitation || 0, units.precipitation);
 
     //k. Convert daily and hourly temperatures
@@ -381,13 +387,19 @@ export const WeatherData = ({ units }) => {
                         <div className="wind-speed">
                             <p>Wind Speed</p>
                             <span>
-                                {displayWindSpeed} {weather.windSpeedUnit}
+                                {displayWindSpeed} {units.wind === weather.windSpeedUnit ? weather.windSpeedUnit : 'mph'}
+                                {/* OR 
+                                    {displayWindSpeed} {units.wind === 'km/h' ? weather.windSpeedUnit : 'mph'} 
+                                */}
                             </span>
                         </div>
                         <div className="precipitation">
                             <p>Precipitation</p>
                             <span>
-                                {displayPrecipitation} {weather.precipitationUnit}
+                                {displayPrecipitation} {units.precipitation === weather.precipitationUnit ? weather.precipitationUnit : 'in'}
+                                {/* OR
+                                    {displayPrecipitation} {units.precipitation === 'mm' ? weather.precipitationUnit : 'in'} 
+                                */}
                             </span>
                         </div>
                     </div>
@@ -422,7 +434,7 @@ export const WeatherData = ({ units }) => {
                             </select> */}
                             <DaysDropdown 
                                 // Display the selected day in long date format
-                                selected={dailyForecast.find(day => day.date === selectedDay)?.longDate || 'Select day'} 
+                                selected={dailyForecast.find(day => day.date === selectedDay)?.longDate} 
                                 options={dailyForecast}
                                 onChange={(day) => setSelectedDay(day.date)}
                             />

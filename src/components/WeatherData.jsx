@@ -9,7 +9,33 @@ import { DailyForecasts } from './DailyForecasts';
 import { DaysDropdown } from './DaysDropdown';
 import { useDebounce } from 'react-use';
 
-export const WeatherData = () => {
+
+//e. Conversion functions
+//e(i) Temperature Conversion
+const convertTemperature = (temp, unit) => {
+    if (unit === 'fahrenheit') {
+        return Math.round((temp * 9/5) + 32)
+    }
+    return Math.round(temp);
+};
+
+//e(ii) Wind Speed Conversion
+const convertWindSpeed = (speed, unit) => {
+    if (unit === 'mph') {
+        return (speed * 0.621371).toFixed(1);
+    }
+    return speed;
+};
+
+//e(iii) Precipitation Conversion
+const convertPrecipitation = (precipitation, unit) => {
+    if (unit === 'in') {
+        return (precipitation / 25.4).toFixed(2);
+    }
+    return precipitation;
+};
+
+export const WeatherData = ({ units }) => {
     const [searchCity, setSearchCity] = useState('');
     const [weather, setWeather] = useState({});
     const [dailyForecast, setDailyForecast] = useState([]);
@@ -200,9 +226,9 @@ export const WeatherData = () => {
     }, []);
 
 
-    //d. Date and Time Formatting
+    //f. Date and Time Formatting
 
-    // d(i). Date Formatting for City/Location
+    // f(i). Date Formatting for City/Location
     const formatDate = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -213,7 +239,7 @@ export const WeatherData = () => {
         });
     };
 
-    // d(ii). Date Formatting for Daily Forecast
+    // f(ii). Date Formatting for Daily Forecast
     const formatDailyForecastDate = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -221,7 +247,7 @@ export const WeatherData = () => {
         });
     };
 
-    //d(iii). Date and Time Formatting for Hourly Forecast
+    //f(iii). Date and Time Formatting for Hourly Forecast
     const formatWeekday = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -238,7 +264,7 @@ export const WeatherData = () => {
         });
     };
 
-    //e. Final Render to get User Location and display weather data
+    //g. Final Render to get User Location and display weather data
     useEffect(() => {
         const initialWeather = async () => {
             if (weather.city) return;
@@ -261,14 +287,14 @@ export const WeatherData = () => {
     }, [fetchWeatherData, weather.city]);
 
 
-    // f. Handle Day Selection - useEffect that sets hourlyForecast to also set selectedDay:
+    // h. Handle Day Selection - useEffect that sets hourlyForecast to also set selectedDay:
     useEffect(() => {
         if (hourlyForecast.length > 0 && !selectedDay) {
             setSelectedDay(hourlyForecast[0].day);
         }
     }, [hourlyForecast, selectedDay]);
 
-    //g. Get filtered hourly forecast for selected day
+    //i. Get filtered hourly forecast for selected day
     const getFilteredHourlyForecast = () => {
         if (!selectedDay || hourlyForecast.length === 0) return hourlyForecast;
 
@@ -282,6 +308,19 @@ export const WeatherData = () => {
             fetchWeatherData(debouncedSearchCity);
         }
     }, [fetchWeatherData, debouncedSearchCity]);
+
+
+    //j. Calculate display values using the conversion functions
+    // Calculated on every render based on the units prop
+    const displayTemperature = convertTemperature(weather.temperature || 0, units.temperature);
+    const displayFeelsLike = convertTemperature(weather.feelsLike || 0, units.temperature);
+    const displayWindSpeed = convertWindSpeed(weather.wind || 0, units.wind);
+    const displayPrecipitation = convertPrecipitation(weather.precipitation || 0, units.precipitation);
+
+    //k. Convert daily and hourly temperatures
+    const convertDailyMinTemp = (temp) => convertTemperature(temp, units.temperature);
+    const convertDailyMaxTemp = (temp) => convertTemperature(temp, units.temperature);
+    const convertHourlyTemp = (temp) => convertTemperature(temp, units.temperature);
 
 
     return (
@@ -318,7 +357,9 @@ export const WeatherData = () => {
                                 )}
                             </div>
                             <div className="temperature">
-                                <h1>{weather.temperature}{weather.temperatureUnit}</h1>
+                                <h1>
+                                    {displayTemperature}{weather.temperatureUnit}
+                                </h1>
                             </div>
                         </div>
                     </div>
@@ -328,7 +369,7 @@ export const WeatherData = () => {
                         <div className="feels-like">
                             <p>Feels Like</p>
                             <span>
-                                {weather.feelsLike}{weather.temperatureUnit}
+                                {displayFeelsLike}{weather.temperatureUnit}
                             </span>
                         </div>
                         <div className="humidity">
@@ -340,13 +381,13 @@ export const WeatherData = () => {
                         <div className="wind-speed">
                             <p>Wind Speed</p>
                             <span>
-                                {weather.windSpeed} {weather.windSpeedUnit}
+                                {displayWindSpeed} {weather.windSpeedUnit}
                             </span>
                         </div>
                         <div className="precipitation">
                             <p>Precipitation</p>
                             <span>
-                                {weather.precipitation} {weather.precipitationUnit}
+                                {displayPrecipitation} {weather.precipitationUnit}
                             </span>
                         </div>
                     </div>
@@ -355,7 +396,9 @@ export const WeatherData = () => {
                         dailyForecasts={dailyForecast}
                         weatherIcons={weatherIcons}
                         weatherDescriptions={weatherDescriptions}
-                        weatherUnit={weather.temperatureUnit} 
+                        weatherUnit={weather.temperatureUnit}
+                        convertMinTemp={convertDailyMinTemp}
+                        convertMaxTemp={convertDailyMaxTemp} 
                     />
                 </div>
 
@@ -396,9 +439,13 @@ export const WeatherData = () => {
                                                     className='hourly-weather-icon'
                                                 />
                                             )}
-                                            <span className="time">{hour.time}</span>
+                                            <span className="time">
+                                                {hour.time}
+                                            </span>
                                         </div>
-                                        <span className="hour-temp">{hour.temperature}{weather.temperatureUnit}</span>
+                                        <span className="hour-temp">
+                                            {convertHourlyTemp(hour.temperature)}{weather.temperatureUnit}
+                                        </span>
                                     </div>
                                 )
                             })}

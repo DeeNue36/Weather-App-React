@@ -1,31 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UnitsDropdown } from './UnitsDropdown';
 
-export const Header = ({ units, setUnits }) => {
+export const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     //Toggle Dropdown Visibility
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
-    };
-
-    // Handle Individual Units/Metrics Selection
-    const handleUnitsChange = (unitType, value) => {
-        setUnits(prevUnits => ({
-            ...prevUnits,
-            [unitType]: value
-        }))
-        setIsDropdownOpen(false);
-    }
-
-    // Switch between Metric and Imperial Units at once
-    const changeWeatherUnits = () => {
-        const isMetric = units.temperature === 'celsius';
-        setUnits({
-            temperature: isMetric ? 'fahrenheit' : 'celsius',
-            wind: isMetric ? 'mph' : 'km/h',
-            precipitation: isMetric ? 'in' : 'mm'
-        });
     };
 
     return (
@@ -49,9 +30,6 @@ export const Header = ({ units, setUnits }) => {
                     <UnitsDropdown 
                         isOpen={isDropdownOpen} 
                         setIsOpen={setIsDropdownOpen} 
-                        units={units}
-                        onUnitChange={handleUnitsChange}
-                        onChangeWeatherUnits={changeWeatherUnits}
                     />
                 }
             </div>

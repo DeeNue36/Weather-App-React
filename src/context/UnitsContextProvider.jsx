@@ -42,6 +42,7 @@ export const UnitsProvider = ({ children }) => {
         }));
     };
 
+    // Return Provider Component
     return (
         <UnitsContext.Provider value = {{ units, setUnits, toggleWeatherUnits, handleUnitChange }}>
             {children}

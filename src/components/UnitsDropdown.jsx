@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { useUnitsContext } from '../context/UnitsContext';
 
-export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChangeWeatherUnits }) => {
+export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
+    const { units, toggleWeatherUnits, handleUnitChange } = useUnitsContext();
     const dropdownRef = useRef(null); // Reference to the dropdown element
 
     // Close the dropdown when clicking outside
@@ -31,7 +33,7 @@ export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChange
                 <div className="units-dropdown-options">
                     <span 
                         className="units-dropdown-option" 
-                        onClick={onChangeWeatherUnits}
+                        onClick={toggleWeatherUnits}
                     >
                         Switch to {units.temperature === 'celsius' ? 'Imperial' : 'Metric'}
                     </span>
@@ -44,7 +46,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChange
                             </p>
                             <span 
                                 className="metric"
-                                onClick={() => onUnitChange('temperature', 'celsius')}
+                                onClick={() =>
+                                    handleUnitChange('temperature', 'celsius')}
                             >
                                 Celsius (°C)
                                 {units.temperature === 'celsius' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
@@ -52,7 +55,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChange
 
                             <span 
                                 className="metric"
-                                onClick={() => onUnitChange('temperature', 'fahrenheit')}
+                                onClick={() =>
+                                    handleUnitChange('temperature', 'fahrenheit')}
                             >
                                 Fahrenheit (°F)
                                 {units.temperature === 'fahrenheit' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
@@ -67,7 +71,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChange
                             </p>
                             <span 
                                 className="metric"
-                                onClick={() => onUnitChange('wind', 'km/h')}
+                                onClick={() =>
+                                    handleUnitChange('wind', 'km/h')}
                             >
                                 km/h
                                 {units.wind === 'km/h' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
@@ -75,7 +80,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChange
 
                             <span 
                                 className="metric"
-                                onClick={() => onUnitChange('wind', 'mph')}
+                                onClick={() =>
+                                    handleUnitChange('wind', 'mph')}
                             >
                                 mph
                                 {units.wind === 'mph' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
@@ -90,7 +96,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChange
                             </p>
                             <span 
                                 className="metric"
-                                onClick={() => onUnitChange('precipitation', 'mm')}
+                                onClick={() =>
+                                    handleUnitChange('precipitation', 'mm')}
                             >
                                 Millimeters (mm)
                                 {units.precipitation === 'mm' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
@@ -98,7 +105,8 @@ export const UnitsDropdown = ({ isOpen, setIsOpen, units, onUnitChange, onChange
 
                             <span 
                                 className="metric"
-                                onClick={() => onUnitChange('precipitation', 'in')}
+                                onClick={() =>
+                                    handleUnitChange('precipitation', 'in')}
                             >
                                 Inches (in)
                                 {units.precipitation === 'in' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}

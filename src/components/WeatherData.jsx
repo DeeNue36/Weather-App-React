@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState, useEffect, useCallback } from 'react'
 import { Search } from './Search';
 import { Spinner } from './Spinner';
@@ -8,6 +7,7 @@ import { weatherDescriptions } from '../weatherDescriptions';
 import { DailyForecasts } from './DailyForecasts';
 import { DaysDropdown } from './DaysDropdown';
 import { useDebounce } from 'react-use';
+import { useUnitsContext } from '../context/UnitsContext';
 
 
 //e. Conversion functions
@@ -35,7 +35,8 @@ const convertPrecipitation = (precipitation, unit) => {
     return precipitation;
 };
 
-export const WeatherData = ({ units }) => {
+export const WeatherData = () => {
+    const { units } = useUnitsContext();
     const [searchCity, setSearchCity] = useState('');
     const [weather, setWeather] = useState({});
     const [dailyForecast, setDailyForecast] = useState([]);

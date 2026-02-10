@@ -1,22 +1,8 @@
-import { createContext, useContext, useState } from 'react'
-
-// Create context variable/object
-const UnitsContext = createContext();
-
-// Custom hook to use uUnitsContext
-export const useUnitsContext = () => {
-    const context = useContext(UnitsContext);
-
-    // check if context is used outside of a provider
-    if(!context) {
-        throw new Error('useUnitsContext must be used withing a UnitsProvider');
-    }
-    return context;
-};
+import { useState } from 'react'
+import { UnitsContext } from './UnitsContext'
 
 // Units Provider Component
 export const UnitsProvider = ({ children }) => {
-
     // Default State for Weather Units
     const [units, setUnits] = useState({
         temperature: 'celsius',
@@ -48,4 +34,5 @@ export const UnitsProvider = ({ children }) => {
             {children}
         </UnitsContext.Provider>
     );
+
 };

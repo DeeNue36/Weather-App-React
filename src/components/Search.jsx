@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDebounce } from 'react-use';
 import { BASE_CITY_API_URL } from '../api';
+import { Spinner } from './Spinner';
 
 export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData }) => {
     const [citySuggestions, setCitySuggestions] = useState([]);
@@ -56,6 +57,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
             }
 
             const data = await response.json();
+            console.log('API Response:', data);
 
             if (data.results && data.results.length > 0) {
                 setCitySuggestions(data.results);
@@ -85,29 +87,87 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
     // Handle Input Submission (Enter key or Search button)
     const handleSearch = (e) => {
         e?.preventDefault(); // Prevent default form submission behavior
-        setShowSuggestedCities(false);
-        fetchWeatherData(searchCity);
+        // setShowSuggestedCities(false);
+        // fetchWeatherData(searchCity);
+        if (searchCity && searchCity.trim().length >=2) {
+            fetchCitySuggestions(searchCity);
+        }
+        else {
+            // If no input or query too short just fetch weather directly
+            fetchWeatherData(searchCity);
+        }
+    };
+
+    // Handle Enter key - also shows dropdown
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch(e);
+        }
+        if (e.key === 'Escape') {
+            setShowSuggestedCities(false);
+        }
     };
 
 
 
     return (
-        <div className="search">
-            <div className="search-input">
-                <img src="icon-search.svg" alt="Search icon" />
+        <div className="search" ref={searchRef}>
+            <div className="search-input-container">
+                {/* Search Input Bar */}
+                <div className="search-input">
+                    <img src="icon-search.svg" alt="Search icon" />
 
-                <input
-                    type="text"
-                    placeholder='Search for a place...'
-                    value={searchCity}
-                    onChange={(e) => setSearchCity(e.target.value)}
-                />
+                    <input
+                        type="text"
+                        placeholder='Search for a place...'
+                        value = {searchCity}
+                        onChange = {(e) => setSearchCity(e.target.value)}
+                        onKeyDown = {handleKeyDown}
+                        onFocus = {() => {
+                            if (citySuggestions.length > 0) setShowSuggestedCities(true);
+                        }}
+                    />
+
+                    {/* Comment out later */}
+                    {/* {isSearching && (
+                        <div>
+                            <Spinner />
+                            <span className="search-loading">Search in progress</span>
+                        </div>
+                    )} */}
+                </div>
+
+                {/* Show suggested cities based on user search/query */}
+                {showSuggestedCities && citySuggestions.length > 0 && (
+                    <ul className="searched-suggestions">
+                        {/* {isSearching && (
+                            <div>
+                                <Spinner />
+                                <span className="search-loading">Search in progress</span>
+                            </div>
+                        )} */}
+                        {citySuggestions.map((city, index) => (
+                            <li 
+                                className="search-suggestion-location" 
+                                key={index}
+                                onClick={() => handleCitySuggestionClick(city)}
+                            >
+                                <span className="suggestion-location-name">
+                                    {city.name}
+                                </span>
+                                <span className="suggestion-location-country">
+                                    {city.country}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
 
             </div>
             <button 
                 className="search-btn" 
-                onClick={fetchWeatherData} 
-                disabled={isLoading}
+                onClick={handleSearch} 
+                disabled={isLoading || !searchCity.trim()}
             >
                 Search
             </button>

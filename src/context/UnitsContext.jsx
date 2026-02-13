@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react';
 export const UnitsContext = createContext();
 
 // Custom hook to use units context
-export const useUnitsContext = () => {
+export const useUnits = () => {
     const context = useContext(UnitsContext);
 
     // check if context is used outside of a provider

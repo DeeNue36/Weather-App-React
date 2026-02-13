@@ -7,7 +7,7 @@ import { weatherDescriptions } from '../weatherDescriptions';
 import { DailyForecasts } from './DailyForecasts';
 import { DaysDropdown } from './DaysDropdown';
 import { useDebounce } from 'react-use';
-import { useUnitsContext } from '../context/UnitsContext';
+import { useUnits } from '../context/UnitsContext';
 
 
 //e. Conversion functions
@@ -36,7 +36,7 @@ const convertPrecipitation = (precipitation, unit) => {
 };
 
 export const WeatherData = () => {
-    const { units } = useUnitsContext();
+    const { units } = useUnits();
     const [searchCity, setSearchCity] = useState('');
     const [weather, setWeather] = useState({});
     const [dailyForecast, setDailyForecast] = useState([]);

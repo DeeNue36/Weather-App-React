@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { useUnitsContext } from '../context/UnitsContext';
+import { useUnits } from '../context/UnitsContext';
 
 export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
-    const { units, toggleWeatherUnits, handleUnitChange } = useUnitsContext();
+    const { units, toggleWeatherUnits, handleUnitChange } = useUnits();
     const dropdownRef = useRef(null); // Reference to the dropdown element
 
     // Close the dropdown when clicking outside

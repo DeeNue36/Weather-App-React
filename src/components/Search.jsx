@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDebounce } from 'react-use';
 import { BASE_CITY_API_URL } from '../api';
 import { Spinner } from './Spinner';
 
@@ -8,25 +7,6 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
     const [showSuggestedCities, setShowSuggestedCities] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     const searchRef = useRef(null); // Reference to detect clicks outside dropdown
-    const [debouncedSearchedCity, setDebouncedSearchedCity] = useState(''); // Debounce the searchCity value
-
-    // Debouncing, delay API call until user stops typing for a second
-    useDebounce(() => {
-        setDebouncedSearchedCity(searchCity);
-    }, 1000, [searchCity]);
-
-    // Fetch city suggestions when debounced value changes in the input field
-    useEffect(() => {
-        // don't perform a search if input field is empty or too short
-        if (!debouncedSearchedCity || debouncedSearchedCity.length < 2) {
-            setCitySuggestions([]);
-            setShowSuggestedCities(false);
-            return;
-        }
-
-        // Fetch city suggestions
-        fetchCitySuggestions(debouncedSearchedCity);
-    }, [debouncedSearchedCity]);
 
 
     // Close dropdown when clicking outside it
@@ -87,8 +67,8 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
     // Handle Input Submission (Enter key or Search button)
     const handleSearch = (e) => {
         e?.preventDefault(); // Prevent default form submission behavior
-        // setShowSuggestedCities(false);
-        // fetchWeatherData(searchCity);
+
+        // Only fetch suggestions if there's input
         if (searchCity && searchCity.trim().length >=2) {
             fetchCitySuggestions(searchCity);
         }
@@ -107,7 +87,6 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
             setShowSuggestedCities(false);
         }
     };
-
 
 
     return (
@@ -164,6 +143,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
                 )}
 
             </div>
+            
             <button 
                 className="search-btn" 
                 onClick={handleSearch} 

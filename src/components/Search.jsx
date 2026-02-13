@@ -42,7 +42,8 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
         };
     }, []);
 
-    // Fetch city search suggestions from API
+
+    //? Fetch city search suggestions from API
     const fetchCitySuggestions = async (query) => {
         setIsSearching(true);
 
@@ -73,6 +74,20 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
             setIsSearching(false);
         }
     }
+
+    // Show weather data for a city suggestion that is clicked
+    const handleCitySuggestionClick = (city) => {
+        setSearchCity(city.name);
+        setShowSuggestedCities(false);
+        fetchWeatherData(city.name);
+    };
+
+    // Handle Input Submission (Enter key or Search button)
+    const handleSearch = (e) => {
+        e?.preventDefault(); // Prevent default form submission behavior
+        setShowSuggestedCities(false);
+        fetchWeatherData(searchCity);
+    };
 
 
 

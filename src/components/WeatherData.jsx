@@ -6,7 +6,6 @@ import { weatherIcons } from '../weatherIcons';
 import { weatherDescriptions } from '../weatherDescriptions';
 import { DailyForecasts } from './DailyForecasts';
 import { DaysDropdown } from './DaysDropdown';
-import { useDebounce } from 'react-use';
 import { useUnits } from '../context/UnitsContext';
 
 
@@ -44,11 +43,6 @@ export const WeatherData = () => {
     const [selectedDay, setSelectedDay] = useState(dailyForecast[0]?.date || '');
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [debouncedSearchCity, setDebouncedSearchCity] = useState('');
-
-    useDebounce(() => {
-        setDebouncedSearchCity(searchCity);
-    }, 1000, [searchCity]);
 
 
     //A. Get the user's location coordinates using the browser
@@ -307,14 +301,6 @@ export const WeatherData = () => {
 
         return hourlyForecast.filter(forecast => forecast.shortDay === selectedDay);
     }
-
-
-    useEffect(() => {
-        // Only fetch if there's a search query
-        if (debouncedSearchCity) {
-            fetchWeatherData(debouncedSearchCity);
-        }
-    }, [fetchWeatherData, debouncedSearchCity]);
 
 
     //j. Calculate display values using the conversion functions

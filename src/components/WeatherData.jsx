@@ -121,7 +121,7 @@ export const WeatherData = () => {
             //b. Get the city name from the search query
             else {
                 //b(i). Use the search query to get location/city
-                const endpoint = `${BASE_CITY_API_URL}name=${encodeURIComponent(query)}&count=2`;
+                const endpoint = `${BASE_CITY_API_URL}name=${encodeURIComponent(query)}`;
     
                 const cityResponse = await fetch(endpoint);
                 if(!cityResponse.ok) {

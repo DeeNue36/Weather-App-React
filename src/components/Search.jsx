@@ -60,16 +60,16 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
     // Show weather data for a city suggestion that is clicked
     const handleCitySuggestionClick = (city) => {
         setSearchCity(city.name);
-        setShowSuggestedCities(false);
-        fetchWeatherData(city.name);
+        fetchWeatherData(city.name, {latitude: city.latitude, longitude: city.longitude});
+        setShowSuggestedCities(false); // Close dropdown
     };
 
-    // Handle Input Submission (Enter key or Search button)
+    // Handle Input Submission (Enter key or Search button click)
     const handleSearch = (e) => {
         e?.preventDefault(); // Prevent default form submission behavior
 
         // Only fetch suggestions if there's input
-        if (searchCity && searchCity.trim().length >=2) {
+        if (searchCity && searchCity.trim().length >= 2) {
             fetchCitySuggestions(searchCity);
         }
         else {
@@ -102,9 +102,6 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
                         value = {searchCity}
                         onChange = {(e) => setSearchCity(e.target.value)}
                         onKeyDown = {handleKeyDown}
-                        onFocus = {() => {
-                            if (citySuggestions.length > 0) setShowSuggestedCities(true);
-                        }}
                     />
 
                     {/* Comment out later */}
@@ -125,10 +122,12 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
                                 <span className="search-loading">Search in progress</span>
                             </div>
                         )} */}
+                        {/* TODO: Work on loading state indicator */}
                         {citySuggestions.map((city, index) => (
                             <li 
                                 className="search-suggestion-location" 
-                                key={index}
+                                key={`${city.latitude}-${city.longitude}`}
+                                // OR key={index}
                                 onClick={() => handleCitySuggestionClick(city)}
                             >
                                 <span className="suggestion-location-name">
@@ -143,7 +142,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
                 )}
 
             </div>
-            
+
             <button 
                 className="search-btn" 
                 onClick={handleSearch} 

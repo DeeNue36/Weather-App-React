@@ -123,12 +123,12 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
                             </div>
                         )} */}
                         {/* TODO: Work on loading state indicator */}
-                        {citySuggestions.map((city, index) => (
+                        {citySuggestions.map((city) => (
                             <li 
                                 className="search-suggestion-location" 
-                                key={`${city.latitude}-${city.longitude}`}
-                                // OR key={index}
                                 onClick={() => handleCitySuggestionClick(city)}
+                                key={`${city.latitude}-${city.longitude}`}
+                                // OR key={index} and add index as a param to the mapping function
                             >
                                 <span className="suggestion-location-name">
                                     {city.name}

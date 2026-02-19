@@ -138,7 +138,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
                                         // OR key={index} and add index as a param to the mapping function
                                     >
                                         <span className="suggestion-location-name">
-                                            {city.name}
+                                            {city.name},
                                         </span>
                                         <span className="suggestion-location-country">
                                             {city.country}

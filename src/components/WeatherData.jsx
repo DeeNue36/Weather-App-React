@@ -9,8 +9,8 @@ import { DaysDropdown } from './DaysDropdown';
 import { useUnits } from '../context/UnitsContext';
 
 
-//e. Conversion functions
-//e(i) Temperature Conversion
+//? e. Conversion functions
+//? e(i) Temperature Conversion
 const convertTemperature = (temp, unit) => {
     if (unit === 'fahrenheit') {
         return Math.round((temp * 9/5) + 32)
@@ -18,7 +18,7 @@ const convertTemperature = (temp, unit) => {
     return Math.round(temp);
 };
 
-//e(ii) Wind Speed Conversion
+//? e(ii) Wind Speed Conversion
 const convertWindSpeed = (speed, unit) => {
     if (unit === 'mph') {
         return (speed * 0.621371).toFixed(0);
@@ -26,7 +26,7 @@ const convertWindSpeed = (speed, unit) => {
     return speed;
 };
 
-//e(iii) Precipitation Conversion
+//? e(iii) Precipitation Conversion
 const convertPrecipitation = (precipitation, unit) => {
     if (unit === 'in') {
         return (precipitation / 25.4).toFixed(0);
@@ -45,7 +45,7 @@ export const WeatherData = () => {
     const [isLoading, setIsLoading] = useState(false);
 
 
-    //A. Get the user's location coordinates using the browser
+    //? A. Get the user's location coordinates using the browser
     const getUserLocation = () => {
         return new Promise((resolve, reject) => {
             if (!navigator.geolocation) {
@@ -66,7 +66,7 @@ export const WeatherData = () => {
         });
     };
 
-    //B. Get the city/location name and country from user's coordinates using reverse geocoding
+    //? B. Get the city/location name and country from user's coordinates using reverse geocoding
     const getCityFromCoords = async (lat, lon) => {
         try {
             const bdc_endpoint = `${BDC_REVERSE_GEOCODING_API_URL}latitude=${lat}&longitude=${lon}&localityLanguage=en&key=${BDC_API_KEY}`; // Big Data Cloud reverse geocode API
@@ -107,20 +107,20 @@ export const WeatherData = () => {
         try {
             let latitude, longitude, name, country;
 
-            // a. Get the user's location which will be displayed as the initial city/location
+            //? a. Get the user's location which will be displayed as the initial city/location
             if(coords) {
-                //Use provided coordinates (from geolocation)
+                //* Use provided coordinates (from geolocation)
                 latitude = coords.latitude;
                 longitude = coords.longitude;
 
-                // Get city name from coordinates via reverse geocoding
+                //* Get city name from coordinates via reverse geocoding
                 const cityInfo = await getCityFromCoords(latitude, longitude);
                 name = cityInfo.cityName;
                 country = cityInfo.country;
             }
-            //b. Get the city name from the search query
+            //? b. Get the city name from the search query
             else {
-                //b(i). Use the search query to get location/city
+                //? b(i). Use the search query to get location/city
                 const endpoint = `${BASE_CITY_API_URL}name=${encodeURIComponent(query)}`;
     
                 const cityResponse = await fetch(endpoint);
@@ -142,7 +142,7 @@ export const WeatherData = () => {
                 country = city.country;
             }
 
-            //c. Get the weather data for the city
+            //? c. Get the weather data for the city
             const weatherDataEndpoint = `${BASE_WEATHER_API_URL}latitude=${latitude}&longitude=${longitude}&forecast_days=7&daily=temperature_2m_min,temperature_2m_max,weather_code&hourly=,weather_code,temperature_2m&current=is_day,apparent_temperature,relative_humidity_2m,temperature_2m,snowfall,showers,rain,precipitation,wind_speed_10m,weather_code&timezone=auto`; //OR &current_weather=true
 
             const weatherResponse = await fetch(weatherDataEndpoint);
@@ -159,7 +159,7 @@ export const WeatherData = () => {
                 return;
             }
 
-            // Set the weather data
+            //* Set the weather data
             setWeather({
                 city: name,
                 country: country,
@@ -181,9 +181,9 @@ export const WeatherData = () => {
                 humidityUnit: weatherData.current_units.relative_humidity_2m
             });
 
-            //d. Get daily and hourly forecasts
+            //? d. Get daily and hourly forecasts
 
-            //d(i). Get daily forecast from weatherData
+            //? d(i). Get daily forecast from weatherData
             const getDailyForecast = weatherData.daily.time.map((time, index) => ({
                 date: formatDailyForecastDate(time), // "Wed", "Thu" etc - displayed in the daily forecast section, also used for filtering the hourly forecast for the selected day
                 longDate: formatWeekday(time), // "Wednesday" or "Thursday" etc - for displaying in the hourly section
@@ -193,7 +193,7 @@ export const WeatherData = () => {
             }));
             console.log(getDailyForecast);
 
-            //d(ii). Get hourly forecast from weatherData
+            //? d(ii). Get hourly forecast from weatherData
             const getHourlyForecast = weatherData.hourly.time.map((time, index) => ({
                 day: formatWeekday(time), // "Wednesday" or "Thursday"
                 shortDay: formatDailyForecastDate(time), // "Wed" or "Thu" etc - for matching with the daily forecast date to filter the hourly forecast for the selected day
@@ -206,7 +206,7 @@ export const WeatherData = () => {
             setDailyForecast(getDailyForecast);
             setHourlyForecast(getHourlyForecast);
 
-            // Auto select the current day and set it to the selected day state when the weather data is fetched
+            //* Auto select the current day and set it to the selected day state when the weather data is fetched
             if (getHourlyForecast.length > 0) {
                 setSelectedDay(getHourlyForecast[0].shortDay); // "Wed" 
             }
@@ -222,9 +222,9 @@ export const WeatherData = () => {
     }, []);
 
 
-    //f. Date and Time Formatting
+    //? f. Date and Time Formatting
 
-    // f(i). Date Formatting for City/Location
+    //? f(i). Date Formatting for City/Location
     const formatDate = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -235,7 +235,7 @@ export const WeatherData = () => {
         });
     };
 
-    // f(ii). Date Formatting for Daily Forecast
+    //? f(ii). Date Formatting for Daily Forecast
     const formatDailyForecastDate = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -243,9 +243,9 @@ export const WeatherData = () => {
         });
     };
 
-    // f(iii). Date and Time Formatting for Hourly Forecast
+    //? f(iii). Date and Time Formatting for Hourly Forecast
 
-    // f(iii)(a) Date Formatting for Hourly Forecast
+    //? f(iii)(a) Date Formatting for Hourly Forecast
     const formatWeekday = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleDateString('en-US', {
@@ -253,7 +253,7 @@ export const WeatherData = () => {
         });
     };
 
-    // f(iii)(b) Time Formatting for Hourly Forecast
+    //? f(iii)(b) Time Formatting for Hourly Forecast
     const formatHourlyForecastTime = (timeString) => {
         const date = new Date(timeString);
         return date.toLocaleTimeString('en-US', {
@@ -263,7 +263,7 @@ export const WeatherData = () => {
         });
     };
 
-    //g. First Render to get User Location and display weather data
+    //? g. First Render to get User Location and display weather data
     useEffect(() => {
         const initialWeather = async () => {
             if (weather.city) return;
@@ -288,14 +288,14 @@ export const WeatherData = () => {
     }, [fetchWeatherData, weather.city]);
 
 
-    // h. Handle Day Selection - set selectedDay to the first day of the hourly forecast if no day is selected:
+    //? h. Handle Day Selection - set selectedDay to the first day of the hourly forecast if no day is selected:
     useEffect(() => {
         if (hourlyForecast.length > 0 && !selectedDay) {
             setSelectedDay(hourlyForecast[0].day);
         }
     }, [hourlyForecast, selectedDay]);
 
-    //i. Get filtered hourly forecast for selected day
+    //? i. Get filtered hourly forecast for selected day
     const getFilteredHourlyForecast = () => {
         if (!selectedDay || hourlyForecast.length === 0) return hourlyForecast;
 
@@ -303,14 +303,14 @@ export const WeatherData = () => {
     }
 
 
-    //j. Calculate display values using the conversion functions
+    //? j. Calculate display values using the conversion functions
     // Calculated on every render based on the units prop
     const displayTemperature = convertTemperature(weather.temperature || 0, units.temperature);
     const displayFeelsLike = convertTemperature(weather.feelsLike || 0, units.temperature);
     const displayWindSpeed = convertWindSpeed(weather.windSpeed || 0, units.wind);
     const displayPrecipitation = convertPrecipitation(weather.precipitation || 0, units.precipitation);
 
-    //k. Convert daily and hourly temperatures
+    //? k. Convert daily and hourly temperatures
     const convertDailyMinTemp = (temp) => convertTemperature(temp, units.temperature);
     const convertDailyMaxTemp = (temp) => convertTemperature(temp, units.temperature);
     const convertHourlyTemp = (temp) => convertTemperature(temp, units.temperature);

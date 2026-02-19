@@ -111,6 +111,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
 
                     <input
                         type="text"
+                        name='search-bar'
                         placeholder='Search for a place...'
                         value = {searchCity}
                         onChange = {(e) => setSearchCity(e.target.value)}

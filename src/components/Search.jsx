@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { BASE_CITY_API_URL } from '../api';
 import { Spinner } from './Spinner';
 
-export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData }) => {
+export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData, errorMessage, setErrorMessage }) => {
     const [citySuggestions, setCitySuggestions] = useState([]); // Array of city suggestions
     const [showSuggestedCities, setShowSuggestedCities] = useState(false); // state to control visibility of suggested cities
     const [isSearching, setIsSearching] = useState(false); // state to control visibility of spinner
@@ -84,8 +84,11 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
         if (searchCity && searchCity.trim().length >= 2) {
             fetchCitySuggestions(searchCity);
         }
+        else if (!searchCity || searchCity.trim().length < 2){
+            // If no input or query too short show error message
+            setErrorMessage('Please enter a valid city name.');
+        }
         else {
-            // If no input or query too short just fetch weather directly
             fetchWeatherData(searchCity);
         }
     };
@@ -156,7 +159,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData 
             <button 
                 className="search-btn" 
                 onClick={handleSearch} 
-                disabled={isLoading || !searchCity.trim()}
+                // disabled={isLoading || !searchCity.trim()}
             >
                 Search
             </button>

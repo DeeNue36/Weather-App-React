@@ -66,6 +66,23 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
         // }
     }
 
+    //? Handle input changes: clear error message and close dropdown when user types
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setSearchCity(value);
+
+        // Clear error message when user starts typing
+        if (errorMessage) {
+            setErrorMessage('');
+        }
+
+        // Close dropdown when user clears/deletes the search input
+        if (value.trim() === '') {
+            setShowSuggestedCities(false);
+            setCitySuggestions([]);
+        }
+    };
+
 
     //? Show weather data for a city suggestion that is clicked
     const handleCitySuggestionClick = (city) => {
@@ -117,7 +134,8 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
                         name='search-bar'
                         placeholder='Search for a place...'
                         value = {searchCity}
-                        onChange = {(e) => setSearchCity(e.target.value)}
+                        // onChange = {(e) => setSearchCity(e.target.value)}
+                        onChange = {handleInputChange}
                         onKeyDown = {handleKeyDown}
                     />
                 </div>

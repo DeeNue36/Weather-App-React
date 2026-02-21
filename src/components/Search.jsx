@@ -30,6 +30,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
         setIsSearching(true);
         setShowSuggestedCities(false);
         setCitySuggestions([]);
+        setErrorMessage(''); // Clear any previous error message
 
         try {
             const endpoint = `${BASE_CITY_API_URL}name=${encodeURIComponent(query)}&count=4&language=en&format=json`;
@@ -49,17 +50,19 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
                 // simulate a delay before showing city suggestions
                 setTimeout(() => {
                     setShowSuggestedCities(true);
-                    setIsSearching(false); // turn off loading after the delay of 2 seconds
+                    setIsSearching(false); // turn off loading after the delay of 0.5 seconds
                 }, 500);
             }
             else {
                 setCitySuggestions([]);
                 setShowSuggestedCities(false);
+                setErrorMessage('No city found matching your search. Please enter a valid location name');
             }
         }
         catch (error) {
             console.error('Error fetching city suggestions:', error);
             setCitySuggestions([]);
+            setErrorMessage('Failed to fetch city suggestions. Please try again.');
         }
         // finally {
         //     setIsSearching(false);

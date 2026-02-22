@@ -180,10 +180,9 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
             <button 
                 className="search-btn" 
                 onClick={handleSearch} 
-                disabled={isLoading || isSearching}
+                disabled={isLoading || isSearching || showSuggestedCities}
             >
-                {/* Search */}
-                {isLoading || isSearching ? <Spinner /> : 'Search'}
+                {(isLoading || isSearching) ? <Spinner /> : 'Search'}
             </button>
         </div>
     )

@@ -335,14 +335,14 @@ export const WeatherData = () => {
 
             {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
             {/* Show the loading skeleton while the weather data is being fetched AND no weather data for a city has been fetched */}
-            {isLoading && !weather.city ? 
+            {!isLoading /* && !weather.city*/  ? 
                 (
                     // * Loading Skeleton
                     <div className='weather-box'>
                         <div className="weather-daily">
 
                             {/* Skeleton: Location's Weather */}
-                            <div className="location-weather skeleton-card">
+                            <div className="location-weather-skeleton">
                                 <div className="city-and-date">
                                     <h4 className="skeleton-location"></h4>
                                     <span className="skeleton-date"></span>
@@ -387,7 +387,7 @@ export const WeatherData = () => {
                                 <p>Daily Forecast</p>
                                 <div className="days-forecasts">
                                     {[...Array(7)].map((_, i) => (
-                                        <div  className="day" key={i}>
+                                        <div  className="day skeleton-day" key={i}>
                                             <div className="skeleton-text w-8"></div>
                                             <div className="skeleton-icon-sm"></div>
                                             <div className="high-low-temp w-full">

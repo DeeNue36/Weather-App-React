@@ -224,9 +224,8 @@
     }
 
     & .search-btn {
-      @apply bg-blue-500 text-neutral-0 px-6 py-3.5 rounded-lg cursor-pointer font-body hover:bg-blue-700 focus:outline-2 focus:outline-offset-4 focus:outline-blue-500;
+      @apply bg-blue-500 text-neutral-0 px-6 py-3.5 rounded-lg cursor-pointer font-body hover:bg-blue-700 focus:outline-2 focus:outline-offset-4 focus:outline-blue-500 disabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-90;
     }
-    /* TODO: add disabled state styling */
 
   }
 

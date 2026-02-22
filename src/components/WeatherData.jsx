@@ -333,137 +333,231 @@ export const WeatherData = () => {
                 setErrorMessage={setErrorMessage}
             />
 
-            {isLoading && <Spinner />}
             {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
-            
-            <div className='weather-box'>
-                <div className="weather-daily">
+            {/* Show the loading skeleton while the weather data is being fetched AND no weather data for a city has been fetched */}
+            {isLoading && !weather.city ? 
+                (
+                    // * Loading Skeleton
+                    <div className='weather-box'>
+                        <div className="weather-daily">
 
-                    {/* TODO: Turn this into a component */}
-                    <div className="location-weather">
-                        <div className="city-and-date">
-                            <h4 className="location">
-                                {/* Display user's location as fallback if search query is empty */}
-                                {weather.city || 'Loading City...'}, {weather.country || 'Loading Country...'}
-                            </h4>
-                            <span className="date">
-                                {weather.dateTime ? formatDate(weather.dateTime) : 'Loading Date...'}
-                            </span>
-                        </div>
+                            {/* Skeleton: Location's Weather */}
+                            <div className="location-weather skeleton-card">
+                                <div className="city-and-date">
+                                    <h4 className="skeleton-location"></h4>
+                                    <span className="skeleton-date"></span>
+                                </div>
 
-                        <div className="condition-and-temperature">
-                            <div className="condition">
-                                {weather.weatherCode !== undefined && (
-                                    <img
-                                        src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'}
-                                        alt={weatherDescriptions(weather.weatherCode)}
-                                        className="weather-icon"
-                                    />
-                                )}
+                                <div className="condition-and-temperature">
+                                    <div className="condition"></div>
+                                    <div className="temperature"></div>
+                                </div>
                             </div>
-                            <div className="temperature">
-                                <h1>
-                                    {displayTemperature}{weather.temperatureUnit}
-                                </h1>
+
+                            {/* Skeleton: Weather Details for Location */}
+                            <div className="location-weather-details">
+                                <div className="feels-like">
+                                    <p>Feels Like</p>
+                                    <span>
+                                        –
+                                    </span>
+                                </div>
+                                <div className="humidity">
+                                    <p>Humidity</p>
+                                    <span>
+                                        –
+                                    </span>
+                                </div>
+                                <div className="wind-speed">
+                                    <p>Wind Speed</p>
+                                    <span>
+                                        –
+                                    </span>
+                                </div>
+                                <div className="precipitation">
+                                    <p>Precipitation</p>
+                                    <span>
+                                        –
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    {/* TODO: Turn this into a component */}
-                    <div className="location-weather-details">
-                        <div className="feels-like">
-                            <p>Feels Like</p>
-                            <span>
-                                {displayFeelsLike}{weather.temperatureUnit}
-                            </span>
-                        </div>
-                        <div className="humidity">
-                            <p>Humidity</p>
-                            <span>
-                                {weather.humidity}{weather.humidityUnit}
-                            </span>
-                        </div>
-                        <div className="wind-speed">
-                            <p>Wind Speed</p>
-                            <span>
-                                {displayWindSpeed} {units.wind === weather.windSpeedUnit ? weather.windSpeedUnit : 'mph'}
-                                {/* OR 
-                                    {displayWindSpeed} {units.wind === 'km/h' ? weather.windSpeedUnit : 'mph'} 
-                                */}
-                            </span>
-                        </div>
-                        <div className="precipitation">
-                            <p>Precipitation</p>
-                            <span>
-                                {displayPrecipitation} {units.precipitation === weather.precipitationUnit ? weather.precipitationUnit : 'in'}
-                                {/* OR
-                                    {displayPrecipitation} {units.precipitation === 'mm' ? weather.precipitationUnit : 'in'} 
-                                */}
-                            </span>
-                        </div>
-                    </div>
-
-                    <DailyForecasts 
-                        dailyForecasts={dailyForecast}
-                        weatherIcons={weatherIcons}
-                        weatherDescriptions={weatherDescriptions}
-                        weatherUnit={weather.temperatureUnit}
-                        convertMinTemp={convertDailyMinTemp}
-                        convertMaxTemp={convertDailyMaxTemp} 
-                    />
-                </div>
-
-                <div className="weather-hourly">
-                    <div className="location-hourly-forecast">
-                        <div className="weekday-hourly-forecast">
-                            <p>Hourly Forecast</p>
-                            {/* <select 
-                                value={selectedDay}
-                                onChange={(e) => setSelectedDay(e.target.value)}
-                                id='weekday-dropdown'
-                                className="select-weekday"
-                            >
-                                {dailyForecast.map((day, index) => {
-                                    return (
-                                        <option key={index} value={day.date}>
-                                            {day.longDate}
-                                        </option>
-                                    )
-                                })}
-                            </select> */}
-                            <DaysDropdown 
-                                // Display the selected day in long date format
-                                selected={dailyForecast.find(day => day.date === selectedDay)?.longDate} 
-                                options={dailyForecast}
-                                onChange={(day) => setSelectedDay(day.date)}
-                            />
-                        </div>
-                        <div className="hourly-weather-forecast">
-                            {getFilteredHourlyForecast().map((hour, index) => {
-                                return (
-                                    <div className="weather-hour-card" key={index}>
-                                        <div className="hour">
-                                            { hour.weatherCode !== undefined && (
-                                                <img
-                                                    src={weatherIcons[hour.weatherCode] || 'icon-sunny.webp'}
-                                                    alt={weatherDescriptions(hour.weatherCode)}
-                                                    className='hourly-weather-icon'
-                                                />
-                                            )}
-                                            <span className="time">
-                                                {hour.time}
-                                            </span>
+                            {/* Skeleton: Daily Forecasts */}
+                            <div className="location-daily-forecasts">
+                                <p>Daily Forecast</p>
+                                <div className="days-forecasts">
+                                    {[...Array(7)].map((_, i) => (
+                                        <div  className="day" key={i}>
+                                            <div className="skeleton-text w-8"></div>
+                                            <div className="skeleton-icon-sm"></div>
+                                            <div className="high-low-temp w-full">
+                                                <p className="skeleton-text w-8"></p>
+                                                <p className="skeleton-text w-8"></p>
+                                            </div>
                                         </div>
-                                        <span className="hour-temp">
-                                            {convertHourlyTemp(hour.temperature)}{weather.temperatureUnit}
-                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div className="weather-hourly">
+                            <div className="location-hourly-forecast skeleton-card">
+                                <div className="weekday-hourly-forecast">
+                                    <p>Hourly Forecast</p>
+                                    <div className="skeleton-days-dropdown">
+                                        <span>–</span>
+                                        <img src="/icon-dropdown.svg" alt="dropdown icon" />
                                     </div>
-                                )
-                            })}
+                                </div>
+
+                                <div className="hourly-weather-forecast">
+                                    {[...Array(24)].map((_, i) => (
+                                        <div className="weather-hour-card skeleton-hourly-card" key={i}>
+                                            <div className="hour"></div>
+                                            <span className="hour-temp"></span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                )
+            :
+                // * Actual Weather Data
+                (
+                    <div className='weather-box'>
+                        <div className="weather-daily">
+
+                            {/* TODO: Turn this into a component */}
+                            <div className="location-weather">
+                                <div className="city-and-date">
+                                    <h4 className="location">
+                                    {/* Display user's location as fallback if search query is empty */}
+                                        {weather.city || 'Loading City...'}, {weather.country || 'Loading Country...'}
+                                    </h4>
+                                    <span className="date">
+                                        {weather.dateTime ? formatDate(weather.dateTime) : 'Loading Date...'}
+                                    </span>
+                                </div>
+
+                                <div className="condition-and-temperature">
+                                    <div className="condition">
+                                        {weather.weatherCode !== undefined && (
+                                            <img
+                                                src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'}
+                                                alt={weatherDescriptions(weather.weatherCode)}
+                                                className="weather-icon"
+                                            />
+                                        )}
+                                    </div>
+                                    <div className="temperature">
+                                        <h1>
+                                            {displayTemperature}{weather.temperatureUnit}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* TODO: Turn this into a component */}
+                            <div className="location-weather-details">
+                                <div className="feels-like">
+                                    <p>Feels Like</p>
+                                    <span>
+                                        {displayFeelsLike}{weather.temperatureUnit}
+                                    </span>
+                                </div>
+                                <div className="humidity">
+                                    <p>Humidity</p>
+                                    <span>
+                                        {weather.humidity}{weather.humidityUnit}
+                                    </span>
+                                </div>
+                                <div className="wind-speed">
+                                    <p>Wind Speed</p>
+                                    <span>
+                                        {displayWindSpeed} {units.wind === weather.windSpeedUnit ? weather.windSpeedUnit : 'mph'}
+                                        {/* OR 
+                                            {displayWindSpeed} {units.wind === 'km/h' ? weather.windSpeedUnit : 'mph'} 
+                                        */}
+                                    </span>
+                                </div>
+                                <div className="precipitation">
+                                    <p>Precipitation</p>
+                                    <span>
+                                        {displayPrecipitation} {units.precipitation === weather.precipitationUnit ? weather.precipitationUnit : 'in'}
+                                        {/* OR
+                                            {displayPrecipitation} {units.precipitation === 'mm' ? weather.precipitationUnit : 'in'} 
+                                        */}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <DailyForecasts 
+                                dailyForecasts={dailyForecast}
+                                weatherIcons={weatherIcons}
+                                weatherDescriptions={weatherDescriptions}
+                                weatherUnit={weather.temperatureUnit}
+                                convertMinTemp={convertDailyMinTemp}
+                                convertMaxTemp={convertDailyMaxTemp} 
+                            />
+
+                        </div>
+
+                        <div className="weather-hourly">
+                            <div className="location-hourly-forecast">
+                                <div className="weekday-hourly-forecast">
+                                    <p>Hourly Forecast</p>
+                                    {/* <select 
+                                        value={selectedDay}
+                                        onChange={(e) => setSelectedDay(e.target.value)}
+                                        id='weekday-dropdown'
+                                        className="select-weekday"
+                                    >
+                                        {dailyForecast.map((day, index) => {
+                                            return (
+                                                <option key={index} value={day.date}>
+                                                    {day.longDate}
+                                                </option>
+                                            )
+                                        })}
+                                    </select> */}
+                                    <DaysDropdown 
+                                        // Display the selected day in long date format
+                                        selected={dailyForecast.find(day => day.date === selectedDay)?.longDate} 
+                                        options={dailyForecast}
+                                        onChange={(day) => setSelectedDay(day.date)}
+                                    />
+                                </div>
+                                
+                                <div className="hourly-weather-forecast">
+                                    {getFilteredHourlyForecast().map((hour, index) => {
+                                        return (
+                                            <div className="weather-hour-card" key={index}>
+                                                <div className="hour">
+                                                    { hour.weatherCode !== undefined && (
+                                                        <img
+                                                            src={weatherIcons[hour.weatherCode] || 'icon-sunny.webp'}
+                                                            alt={weatherDescriptions(hour.weatherCode)}
+                                                            className='hourly-weather-icon'
+                                                        />
+                                                    )}
+                                                    <span className="time">
+                                                        {hour.time}
+                                                    </span>
+                                                </div>
+                                                <span className="hour-temp">
+                                                    {convertHourlyTemp(hour.temperature)}{weather.temperatureUnit}
+                                                </span>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </>
     )
 }

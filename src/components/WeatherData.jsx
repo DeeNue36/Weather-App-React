@@ -66,17 +66,18 @@ export const WeatherData = () => {
         });
     };
 
+
     //? B. Get the city/location name and country from user's coordinates using reverse geocoding
     const getCityFromCoords = async (lat, lon) => {
         try {
-            const bdc_endpoint = `${BDC_REVERSE_GEOCODING_API_URL}latitude=${lat}&longitude=${lon}&localityLanguage=en&key=${BDC_API_KEY}`; // Big Data Cloud reverse geocode API
+            //* Big Data Cloud reverse geocode API
+            const bdc_endpoint = `${BDC_REVERSE_GEOCODING_API_URL}latitude=${lat}&longitude=${lon}&localityLanguage=en&key=${BDC_API_KEY}`; 
 
-            // Alternatives
+            //* Alternatives
             // const endpoint = `${REVERSE_GEOCODING_API_URL}lat=${lat}&lon=${lon}&format=json`;
             // const bdc_endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
             let bdc_response = await fetch(bdc_endpoint);
-
             if (!bdc_response.ok) {
                 console.log('Main API call failed, temporarily switching to free reverse-geocoding-client API');
                 const free_bdc_endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
@@ -100,11 +101,13 @@ export const WeatherData = () => {
     };
 
 
+    // ? C. Fetch weather data
     const fetchWeatherData = useCallback( async(query='', coords = null) => {
         setIsLoading(true);
         setErrorMessage('');
 
         try {
+            //* Making the latitude, longitude, name, and country variables globally available to the rest of the function
             let latitude, longitude, name, country;
 
             //? a. Get the user's location which will be displayed as the initial city/location
@@ -135,7 +138,7 @@ export const WeatherData = () => {
                     throw new Error('City not found');
                 }
     
-                const city = cityData.results[0];
+                const city = cityData.results[0]
                 latitude = city.latitude;
                 longitude = city.longitude;
                 name = city.name;
@@ -163,6 +166,7 @@ export const WeatherData = () => {
             setWeather({
                 city: name,
                 country: country,
+                // current weather
                 dateTime: weatherData.current.time,
                 weatherCode: weatherData.current.weather_code,
                 isDay: weatherData.current.is_day,
@@ -181,7 +185,7 @@ export const WeatherData = () => {
                 humidityUnit: weatherData.current_units.relative_humidity_2m
             });
 
-            //? d. Get daily and hourly forecasts
+            //? D. Get daily and hourly forecasts
 
             //? d(i). Get daily forecast from weatherData
             const getDailyForecast = weatherData.daily.time.map((time, index) => ({
@@ -304,7 +308,7 @@ export const WeatherData = () => {
 
 
     //? j. Calculate display values using the conversion functions
-    // Calculated on every render based on the units prop
+    //* Calculated on every render based on the units prop
     const displayTemperature = convertTemperature(weather.temperature || 0, units.temperature);
     const displayFeelsLike = convertTemperature(weather.feelsLike || 0, units.temperature);
     const displayWindSpeed = convertWindSpeed(weather.windSpeed || 0, units.wind);
@@ -316,10 +320,18 @@ export const WeatherData = () => {
     const convertHourlyTemp = (temp) => convertTemperature(temp, units.temperature);
 
 
+    // TODO: work on creating a skeleton for the loading state and api error state 
     return (
         <>
             <h1>How's the sky looking today?</h1>
-            <Search searchCity={searchCity} setSearchCity={setSearchCity} isLoading={isLoading} fetchWeatherData={fetchWeatherData}/>
+            <Search 
+                searchCity={searchCity} 
+                setSearchCity={setSearchCity} 
+                isLoading={isLoading} 
+                fetchWeatherData={fetchWeatherData} 
+                errorMessage={errorMessage} 
+                setErrorMessage={setErrorMessage}
+            />
 
             {isLoading && <Spinner />}
             {errorMessage && <p className='text-red-500'>{errorMessage}</p>}

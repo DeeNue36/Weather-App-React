@@ -343,14 +343,15 @@ export const WeatherData = () => {
 
                             {/* Skeleton: Location's Weather */}
                             <div className="location-weather-skeleton">
-                                <div className="city-and-date">
-                                    <h4 className="skeleton-location"></h4>
-                                    <span className="skeleton-date"></span>
-                                </div>
-
-                                <div className="condition-and-temperature">
-                                    <div className="condition"></div>
-                                    <div className="temperature"></div>
+                                <div className="skeleton-loader">
+                                    <div className="loading-dots">
+                                        <span className='dot'></span>
+                                        <span className='dot'></span>
+                                        <span className='dot'></span>
+                                    </div>
+                                    <span className="skeleton-loader-text">
+                                        Loading...
+                                    </span>
                                 </div>
                             </div>
 

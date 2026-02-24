@@ -366,4 +366,40 @@
       @apply bg-neutral-800 w-full rounded-2xl;
     }
   }
+
+  /* Skeleton Styling */
+  .location-weather-skeleton {
+    @apply w-full h-[23.2rem] bg-neutral-800 rounded-3xl flex items-center justify-center p-8 animate-pulse;
+
+    & .skeleton-loader {
+      @apply flex flex-col items-center gap-2;
+
+      & .skeleton-loader-icon {
+        @apply w-10 h-10 animate-bounce;
+      }
+
+      & .loading-dots {
+        @apply flex items-center gap-1.5;
+
+        & .dot {
+          @apply w-4 h-4 bg-neutral-0 rounded-[50%]
+        }
+
+        & .dot:nth-child(1) {
+          @apply animate-bounce;
+        }
+
+        & .dot:nth-child(2) {
+          @apply animate-bounce;
+          animation-delay: .4s;
+        }
+
+        & .dot:nth-child(3) {
+          @apply animate-bounce;
+          animation-delay: .6s;
+        }
+      }
+
+    }
+  }
 }

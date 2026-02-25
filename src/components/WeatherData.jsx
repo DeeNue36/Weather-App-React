@@ -357,25 +357,25 @@ export const WeatherData = () => {
 
                             {/* Skeleton: Weather Details for Location */}
                             <div className="location-weather-details">
-                                <div className="feels-like">
+                                <div className="feels-like skeleton-card">
                                     <p>Feels Like</p>
                                     <span>
                                         –
                                     </span>
                                 </div>
-                                <div className="humidity">
+                                <div className="humidity skeleton-card">
                                     <p>Humidity</p>
                                     <span>
                                         –
                                     </span>
                                 </div>
-                                <div className="wind-speed">
+                                <div className="wind-speed skeleton-card">
                                     <p>Wind Speed</p>
                                     <span>
                                         –
                                     </span>
                                 </div>
-                                <div className="precipitation">
+                                <div className="precipitation skeleton-card">
                                     <p>Precipitation</p>
                                     <span>
                                         –
@@ -388,14 +388,7 @@ export const WeatherData = () => {
                                 <p>Daily Forecast</p>
                                 <div className="days-forecasts">
                                     {[...Array(7)].map((_, i) => (
-                                        <div  className="day skeleton-day" key={i}>
-                                            <div className="skeleton-text w-8"></div>
-                                            <div className="skeleton-icon-sm"></div>
-                                            <div className="high-low-temp w-full">
-                                                <p className="skeleton-text w-8"></p>
-                                                <p className="skeleton-text w-8"></p>
-                                            </div>
-                                        </div>
+                                        <div className="day skeleton-day" key={i}></div>
                                     ))}
                                 </div>
                             </div>

@@ -75,6 +75,18 @@
   --background-image-desktop: url("/bg-today-large.svg");
   --background-image-mobile: url("/bg-today-small.svg");
 
+  --animate-jump: jump 1s ease-in-out infinite;
+  @keyframes jump {
+  0%, 100% {
+    transform: translateY(-48%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
 }
 
 @layer base {
@@ -374,32 +386,40 @@
     & .skeleton-loader {
       @apply flex flex-col items-center gap-2;
 
-      & .skeleton-loader-icon {
-        @apply w-10 h-10 animate-bounce;
-      }
-
       & .loading-dots {
-        @apply flex items-center gap-1.5;
+        @apply flex items-center gap-3;
 
         & .dot {
-          @apply w-4 h-4 bg-neutral-0 rounded-[50%]
+          @apply block w-4 h-4 bg-neutral-0 rounded-[50%]
         }
 
         & .dot:nth-child(1) {
-          @apply animate-bounce;
+          @apply animate-jump;
         }
 
         & .dot:nth-child(2) {
-          @apply animate-bounce;
-          animation-delay: .4s;
+          @apply animate-jump;
+          animation-delay: 0.25s;
         }
 
         & .dot:nth-child(3) {
-          @apply animate-bounce;
-          animation-delay: .6s;
+          @apply animate-jump;
+          animation-delay: 0.5s;
         }
       }
 
+      & .skeleton-loader-text {
+        @apply tracking-wide;
+      }
+
     }
+  }
+
+  .skeleton-card {
+    @apply animate-pulse;
+  }
+
+  .skeleton-day {
+    @apply animate-pulse h-54;
   }
 }

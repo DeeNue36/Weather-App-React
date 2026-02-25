@@ -422,4 +422,12 @@
   .skeleton-day {
     @apply animate-pulse h-54;
   }
+
+  .skeleton-days-dropdown {
+    @apply flex items-center justify-center gap-4 py-2 px-4 bg-neutral-600 rounded-lg w-18 cursor-pointer;
+  }
+
+  .skeleton-hourly-card {
+    @apply animate-pulse h-16.5 bg-neutral-700 flex items-center justify-between rounded-lg py-1 border border-neutral-600;
+  }
 }

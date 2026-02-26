@@ -242,6 +242,59 @@
   }
 
 
+  /** Skeleton Styling */
+  /* .location-weather-skeleton {
+    @apply w-full h-[23.2rem] bg-neutral-800 rounded-3xl flex items-center justify-center p-8 animate-pulse bg-none;
+
+    & .skeleton-loader {
+      @apply flex flex-col items-center gap-2;
+
+      & .loading-dots {
+        @apply flex items-center gap-3;
+
+        & .dot {
+          @apply block w-4 h-4 bg-neutral-0 rounded-[50%]
+        }
+
+        & .dot:nth-child(1) {
+          @apply animate-jump;
+        }
+
+        & .dot:nth-child(2) {
+          @apply animate-jump;
+          animation-delay: 0.25s;
+        }
+
+        & .dot:nth-child(3) {
+          @apply animate-jump;
+          animation-delay: 0.5s;
+        }
+      }
+
+      & .skeleton-loader-text {
+        @apply tracking-wide;
+      }
+
+    }
+  } */
+
+  .skeleton-card {
+    @apply animate-pulse;
+  }
+
+  .skeleton-day {
+    @apply animate-pulse h-54;
+  }
+
+  .skeleton-days-dropdown {
+    @apply flex items-center justify-center gap-4 py-2 px-4 bg-neutral-600 rounded-lg w-18 cursor-pointer;
+  }
+
+  .skeleton-hourly-card {
+    @apply animate-pulse h-16.5 bg-neutral-700 flex items-center justify-between rounded-lg py-1 border border-neutral-600;
+  }
+
+
   /** Weather Data Display Boxes */
   .weather-box {
     @apply w-full h-220 flex flex-row gap-8;
@@ -253,6 +306,43 @@
     & .weather-daily {
       @apply w-[67.5%] justify-between;
 
+      /** Location Weather Skeleton Styling */
+      & .location-weather-skeleton {
+        @apply w-full h-[23.2rem] bg-neutral-800 rounded-3xl flex items-center justify-center p-8 animate-pulse bg-none;
+
+        & .skeleton-loader {
+          @apply flex flex-col items-center gap-2;
+
+          & .loading-dots {
+            @apply flex items-center gap-3;
+
+            & .dot {
+              @apply block w-4 h-4 bg-neutral-0 rounded-[50%]
+            }
+
+            & .dot:nth-child(1) {
+              @apply animate-jump;
+            }
+
+            & .dot:nth-child(2) {
+              @apply animate-jump;
+              animation-delay: 0.25s;
+            }
+
+            & .dot:nth-child(3) {
+              @apply animate-jump;
+              animation-delay: 0.5s;
+            }
+          }
+
+          & .skeleton-loader-text {
+            @apply tracking-wide;
+          }
+
+        }
+      }
+
+      /** Actual Location Weather Data Styling */
       & .location-weather {
         @apply w-full h-[23.2rem] bg-desktop bg-no-repeat bg-cover rounded-3xl flex items-center justify-between p-8;
 
@@ -379,55 +469,5 @@
     }
   }
 
-  /* Skeleton Styling */
-  .location-weather-skeleton {
-    @apply w-full h-[23.2rem] bg-neutral-800 rounded-3xl flex items-center justify-center p-8 animate-pulse;
 
-    & .skeleton-loader {
-      @apply flex flex-col items-center gap-2;
-
-      & .loading-dots {
-        @apply flex items-center gap-3;
-
-        & .dot {
-          @apply block w-4 h-4 bg-neutral-0 rounded-[50%]
-        }
-
-        & .dot:nth-child(1) {
-          @apply animate-jump;
-        }
-
-        & .dot:nth-child(2) {
-          @apply animate-jump;
-          animation-delay: 0.25s;
-        }
-
-        & .dot:nth-child(3) {
-          @apply animate-jump;
-          animation-delay: 0.5s;
-        }
-      }
-
-      & .skeleton-loader-text {
-        @apply tracking-wide;
-      }
-
-    }
-  }
-
-  .skeleton-card {
-    @apply animate-pulse;
-  }
-
-  .skeleton-day {
-    @apply animate-pulse h-54;
-  }
-
-  .skeleton-days-dropdown {
-    @apply flex items-center justify-center gap-4 py-2 px-4 bg-neutral-600 rounded-lg w-18 cursor-pointer;
-  }
-
-  .skeleton-hourly-card {
-    @apply animate-pulse h-16.5 bg-neutral-700 flex items-center justify-between rounded-lg py-1 border border-neutral-600;
-  }
 }

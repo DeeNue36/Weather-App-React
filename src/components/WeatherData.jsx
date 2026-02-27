@@ -335,7 +335,7 @@ export const WeatherData = () => {
 
             {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
             {/* Show the loading skeleton while the weather data is being fetched AND no weather data for a city has been fetched */}
-            {!isLoading /* && !weather.city*/  ? 
+            {isLoading || !weather.city ? 
                 (
                     // * Loading Skeleton
                     <div className='weather-box'>
@@ -405,12 +405,9 @@ export const WeatherData = () => {
                                     </div>
                                 </div>
 
-                                <div className="hourly-weather-forecast">
+                                <div className="hourly-weather-forecast h-[unset]">
                                     {[...Array(24)].map((_, i) => (
-                                        <div className="weather-hour-card skeleton-hourly-card" key={i}>
-                                            <div className="hour"></div>
-                                            <span className="hour-temp"></span>
-                                        </div>
+                                        <div className="skeleton-hourly-card" key={i}></div>
                                     ))}
                                 </div>
                             </div>
@@ -427,11 +424,12 @@ export const WeatherData = () => {
                             <div className="location-weather">
                                 <div className="city-and-date">
                                     <h4 className="location">
-                                    {/* Display user's location as fallback if search query is empty */}
-                                        {weather.city || 'Loading City...'}, {weather.country || 'Loading Country...'}
+                                    {/* Display user's location initially when the search query is empty */}
+                                    {/* Only display the comma if there is a country */}
+                                        {weather.city}{weather.country && `, ${weather.country}`}  
                                     </h4>
                                     <span className="date">
-                                        {weather.dateTime ? formatDate(weather.dateTime) : 'Loading Date...'}
+                                        {weather.dateTime && formatDate(weather.dateTime)}
                                     </span>
                                 </div>
 
@@ -446,9 +444,11 @@ export const WeatherData = () => {
                                         )}
                                     </div>
                                     <div className="temperature">
-                                        <h1>
-                                            {displayTemperature}{weather.temperatureUnit}
-                                        </h1>
+                                        {weather.temperature &&
+                                            <h1>
+                                                {displayTemperature}{weather.temperatureUnit}
+                                            </h1>
+                                        }
                                     </div>
                                 </div>
                             </div>

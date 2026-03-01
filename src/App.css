@@ -190,7 +190,7 @@
 
   }
 
-  /** Search Bar */
+  /*? Search Bar */
   .search {
     @apply w-2/4 flex flex-row items-center gap-4 mb-12;
 
@@ -242,7 +242,7 @@
   }
 
 
-  /** Skeleton Styling */
+  /*? Skeleton Styling */
   .skeleton-card {
     @apply animate-pulse;
   }
@@ -260,7 +260,7 @@
   }
 
 
-  /** Weather Data Display Boxes */
+  /*? Weather Data Display Boxes */
   .weather-box {
     @apply w-full h-220 flex flex-row gap-8;
 
@@ -271,7 +271,7 @@
     & .weather-daily {
       @apply w-[67.5%] justify-between;
 
-      /** Location Weather Skeleton Styling */
+      /*? Skeleton Styling - Location Weather */
       & .location-weather-skeleton {
         @apply w-full h-[23.2rem] bg-neutral-800 rounded-3xl flex items-center justify-center p-8 animate-pulse bg-none;
 
@@ -307,7 +307,7 @@
         }
       }
 
-      /** Actual Location Weather Data Styling */
+      /*? Actual Location Weather Data Styling */
       & .location-weather {
         @apply w-full h-[23.2rem] bg-desktop bg-no-repeat bg-cover rounded-3xl flex items-center justify-between p-8;
 
@@ -352,6 +352,7 @@
         }
       }
 
+      /* ? Daily Forecasts */
       & .location-daily-forecasts {
         @apply w-full;
 
@@ -381,6 +382,7 @@
       }
     }
 
+    /* ? Hourly Forecasts */
     & .weather-hourly {
       @apply w-[30%] h-full;
 
@@ -431,6 +433,32 @@
 
     & .day, .location-hourly-forecast {
       @apply bg-neutral-800 w-full rounded-2xl;
+    }
+  }
+
+
+  /* ? API Error Display Styling */
+  & .api-error-container {
+    @apply flex flex-col items-center justify-center gap-y-8 w-160;
+
+    & img {
+      @apply w-12 h-12;
+    }
+
+    & h1 {
+      @apply text-[3.4rem] text-center;
+    }
+
+    & p {
+      @apply text-body-size text-neutral-300 text-center px-14;
+    }
+
+    & button {
+      @apply flex px-4 py-2.5 rounded-lg text-neutral-0 items-center gap-2 bg-neutral-800 cursor-pointer hover:bg-neutral-700;
+
+      & img {
+        @apply w-5 h-5;
+      }
     }
   }
 

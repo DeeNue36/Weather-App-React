@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Search } from './Search';
 import { BASE_CITY_API_URL, BASE_WEATHER_API_URL, BDC_API_KEY, BDC_REVERSE_GEOCODING_API_URL } from '../api';
+import { useUnits } from '../context/UnitsContext';
+import { Search } from './Search';
+import { Skeleton } from './Skeleton';
 import { weatherIcons } from '../weatherIcons';
 import { weatherDescriptions } from '../weatherDescriptions';
 import { DailyForecasts } from './DailyForecasts';
 import { DaysDropdown } from './DaysDropdown';
-import { Skeleton } from './Skeleton';
-import { useUnits } from '../context/UnitsContext';
+import { ApiError } from './ApiError';
 
 
 //? e. Conversion functions
@@ -43,6 +44,7 @@ export const WeatherData = () => {
     const [selectedDay, setSelectedDay] = useState(dailyForecast[0]?.date || '');
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [apiError, setApiError] = useState(false);
 
 
     //? A. Get the user's location coordinates using the browser
@@ -210,15 +212,17 @@ export const WeatherData = () => {
             setDailyForecast(getDailyForecast);
             setHourlyForecast(getHourlyForecast);
 
-            //* Auto select the current day and set it to the selected day state when the weather data is fetched
+            //* Auto select the current day and set the selectedDay state when the weather data is fetched
             if (getHourlyForecast.length > 0) {
                 setSelectedDay(getHourlyForecast[0].shortDay); // "Wed" 
+                //OR setSelectedDay(getDailyForecast[0].date); // "Wed" 
             }
             
         }
         catch (error) {
             console.error(`Error fetching weather data: ${error}`);
             setErrorMessage(error.message);
+            setApiError(true);
         }
         finally {
             setIsLoading(false);
@@ -275,7 +279,8 @@ export const WeatherData = () => {
             try {
                 // Call getUserLocation to get users location coordinates
                 const coords = await getUserLocation(); 
-                fetchWeatherData('', coords);
+                // pass coords to fetchWeatherData function to get the users location weather
+                fetchWeatherData('', coords); 
             }
             catch(error) {
                 console.log('Geolocation Failed, using fallback Location');
@@ -292,17 +297,19 @@ export const WeatherData = () => {
     }, [fetchWeatherData, weather.city]);
 
 
-    //? h. Handle Day Selection - set selectedDay to the first day of the hourly forecast if no day is selected:
+    //? h. Handle Day Selection - auto select the current day
     useEffect(() => {
         if (hourlyForecast.length > 0 && !selectedDay) {
+            //* set selectedDay to the first(current) day of the hourly forecast when no day is selected by the user
             setSelectedDay(hourlyForecast[0].day);
         }
     }, [hourlyForecast, selectedDay]);
 
-    //? i. Get filtered hourly forecast for selected day
+    //? i. Get filtered hourly forecast for any selected day
     const getFilteredHourlyForecast = () => {
         if (!selectedDay || hourlyForecast.length === 0) return hourlyForecast;
 
+        //* Filter the hourly forecast based on the selected day
         return hourlyForecast.filter(forecast => forecast.shortDay === selectedDay);
     }
 
@@ -334,15 +341,21 @@ export const WeatherData = () => {
             />
 
             {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
+
             {/* Show the loading skeleton while the weather data is being fetched AND no weather data for a city has been fetched */}
-            {isLoading || !weather.city ? 
+            {isLoading ? 
                 (
                     // * Loading Skeleton
                     <Skeleton />
                 )
+            : 
+                apiError ? (
+                    // * API Error Display
+                    <ApiError />
+                ) 
             :
                 // * Actual Weather Data
-                (
+                !weather.city  ? null : (
                     <div className='weather-box'>
                         <div className="weather-daily">
 

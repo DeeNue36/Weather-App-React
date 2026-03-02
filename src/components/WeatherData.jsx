@@ -45,6 +45,8 @@ export const WeatherData = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState(false);
+    const [lastQuery, setLastQuery] = useState('');
+    const [lastCoords, setLastCoords] = useState(null);
 
 
     //? A. Get the user's location coordinates using the browser
@@ -107,6 +109,9 @@ export const WeatherData = () => {
     const fetchWeatherData = useCallback( async(query='', coords = null) => {
         setIsLoading(true);
         setErrorMessage('');
+        setApiError(false);
+        setLastQuery(query);
+        setLastCoords(coords);
 
         try {
             //* Making the latitude, longitude, name, and country variables globally available to the rest of the function
@@ -351,7 +356,9 @@ export const WeatherData = () => {
             : 
                 apiError ? (
                     // * API Error Display
-                    <ApiError />
+                    <ApiError 
+                        onRetry = {() => fetchWeatherData(lastQuery, lastCoords)}
+                    />
                 ) 
             :
                 // * Actual Weather Data

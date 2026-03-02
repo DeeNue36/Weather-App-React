@@ -439,7 +439,7 @@
 
   /* ? API Error Display Styling */
   & .api-error-container {
-    @apply flex flex-col items-center justify-center gap-y-8 w-160;
+    @apply flex flex-col items-center justify-center gap-y-8 w-160 mt-16;
 
     & img {
       @apply w-12 h-12;

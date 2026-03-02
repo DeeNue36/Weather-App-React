@@ -56,17 +56,16 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
             else {
                 setCitySuggestions([]);
                 setShowSuggestedCities(false);
-                setErrorMessage('No city found matching your search. Please enter a valid location name');
+                setErrorMessage('No city found matching '+ `"${query}"`+'. Please enter a valid location name');
+                setIsSearching(false); // stop spinner if no results found
             }
         }
         catch (error) {
             console.error('Error fetching city suggestions:', error);
             setCitySuggestions([]);
             setErrorMessage('Failed to fetch city suggestions. Please try again.');
+            setIsSearching(false); // stop spinner if there's an error
         }
-        // finally {
-        //     setIsSearching(false);
-        // }
     }
 
     //? Handle input changes: clear error message and close dropdown when user types

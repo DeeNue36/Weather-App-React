@@ -157,7 +157,7 @@
         & .units-dropdown-options {
           @apply flex flex-col gap-2;
 
-          & .units-dropdown-option {
+          & .weather-units-preference {
             @apply hover:bg-neutral-700 hover:rounded-lg px-2 py-2 focus:outline-2 focus:outline-offset-2 focus:outline-neutral-0 focus:rounded-lg;
           }
 

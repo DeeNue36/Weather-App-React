@@ -32,14 +32,13 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
             {isOpen && (
                 <div className="units-dropdown-options">
                     <span 
-                        className="units-dropdown-option" 
+                        className="weather-units-preference" 
                         onClick={toggleWeatherUnits}
                     >
                         Switch to {units.temperature === 'celsius' ? 'Imperial' : 'Metric'}
                     </span>
 
                     <div className="metrics">
-
                         <div className="temperature-metric">
                             <p className="metrics-heading">
                                 Temperature
@@ -50,7 +49,9 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                                     handleUnitChange('temperature', 'celsius')}
                             >
                                 Celsius (°C)
-                                {units.temperature === 'celsius' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                                {units.temperature === 'celsius' && 
+                                    <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />
+                                }
                             </span>
 
                             <span 
@@ -59,7 +60,9 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                                     handleUnitChange('temperature', 'fahrenheit')}
                             >
                                 Fahrenheit (°F)
-                                {units.temperature === 'fahrenheit' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                                {units.temperature === 'fahrenheit' && 
+                                    <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />
+                                }
                             </span>
                         </div>
 
@@ -75,7 +78,9 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                                     handleUnitChange('wind', 'km/h')}
                             >
                                 km/h
-                                {units.wind === 'km/h' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                                {units.wind === 'km/h' && 
+                                    <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />
+                                }
                             </span>
 
                             <span 
@@ -84,7 +89,9 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                                     handleUnitChange('wind', 'mph')}
                             >
                                 mph
-                                {units.wind === 'mph' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                                {units.wind === 'mph' && 
+                                    <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />
+                                }
                             </span>
                         </div>
 
@@ -100,7 +107,9 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                                     handleUnitChange('precipitation', 'mm')}
                             >
                                 Millimeters (mm)
-                                {units.precipitation === 'mm' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                                {units.precipitation === 'mm' && 
+                                    <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />
+                                }
                             </span>
 
                             <span 
@@ -109,7 +118,9 @@ export const UnitsDropdown = ({ isOpen, setIsOpen }) => {
                                     handleUnitChange('precipitation', 'in')}
                             >
                                 Inches (in)
-                                {units.precipitation === 'in' && <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />}
+                                {units.precipitation === 'in' && 
+                                    <img src='/icon-checkmark.svg' alt='checkmark icon' className='tick-icon' />
+                                }
                             </span>
                         </div>
 

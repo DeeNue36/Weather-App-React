@@ -65,12 +65,17 @@ export const WeatherData = () => {
             // const endpoint = `${REVERSE_GEOCODING_API_URL}lat=${lat}&lon=${lon}&format=json`;
             // const bdc_endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
+            const FALLBACK_GEOCODING_ENDPOINT = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+
             let bdc_response = await fetch(bdc_endpoint);
+
+            //* If the main API call fails, try the fallback
             if (!bdc_response.ok) {
                 console.log('Main API call failed, temporarily switching to free reverse-geocoding-client API');
-                const free_bdc_endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
-                bdc_response = await fetch(free_bdc_endpoint);
+                bdc_response = await fetch(FALLBACK_GEOCODING_ENDPOINT);
             }
+
+            //* If the fallback API call also fails, throw an error
             if (!bdc_response.ok) {
                 throw new Error('Failed to fetch city from coordinates');
             }

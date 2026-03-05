@@ -13,32 +13,11 @@ import { formatDate,
         formatWeekday, 
         formatHourlyForecastTime } 
 from '../utilities/dateFormatting';
+import { convertTemperature, 
+        convertWindSpeed, 
+        convertPrecipitation } 
+from '../utilities/unitConversions';
 
-
-//? e. Conversion functions
-//? e(i) Temperature Conversion
-const convertTemperature = (temp, unit) => {
-    if (unit === 'fahrenheit') {
-        return Math.round((temp * 9/5) + 32)
-    }
-    return Math.round(temp);
-};
-
-//? e(ii) Wind Speed Conversion
-const convertWindSpeed = (speed, unit) => {
-    if (unit === 'mph') {
-        return (speed * 0.621371).toFixed(0);
-    }
-    return speed;
-};
-
-//? e(iii) Precipitation Conversion
-const convertPrecipitation = (precipitation, unit) => {
-    if (unit === 'in') {
-        return (precipitation / 25.4).toFixed(0);
-    }
-    return precipitation;
-};
 
 export const WeatherData = () => {
     const { units } = useUnits();
@@ -225,7 +204,7 @@ export const WeatherData = () => {
             //* Auto select the current day and set the selectedDay state when the weather data is fetched
             if (getHourlyForecast.length > 0) {
                 setSelectedDay(getHourlyForecast[0].shortDay); // "Wed" 
-                //OR setSelectedDay(getDailyForecast[0].date); // "Wed" 
+                //OR setSelectedDay(getDailyForecast[0].date); 
             }
             
         }
@@ -295,7 +274,6 @@ export const WeatherData = () => {
     const convertHourlyTemp = (temp) => convertTemperature(temp, units.temperature);
 
 
-    // TODO: work on creating a skeleton for the loading state and api error state 
     return (
         <>
             <h1>How's the sky looking today?</h1>
@@ -428,7 +406,7 @@ export const WeatherData = () => {
                                     <DaysDropdown 
                                         // Display the selected day in long date format
                                         selected={dailyForecast.find(day => day.date === selectedDay)?.longDate} 
-                                        options={dailyForecast}
+                                        options={dailyForecast} // OR options={dailyForecast.map(day => ({date: day.date, longDate: day.longDate}))}
                                         onChange={(day) => setSelectedDay(day.date)}
                                     />
                                 </div>

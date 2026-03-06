@@ -198,17 +198,15 @@
       @apply w-full relative focus:outline-2 focus:outline-offset-4 focus:outline-neutral-0 focus:rounded-lg;
 
       & .search-input {
-        @apply w-full flex gap-4 rounded-lg text-neutral-0 py-3.5 px-4 cursor-pointer;
         --input-bg: var(--color-neutral-800);
-        background-color: var(--input-bg);
+        @apply w-full bg-(--input-bg) flex gap-4 rounded-lg text-neutral-0 py-3.5 px-4 cursor-pointer;
 
         &:hover {
           --input-bg: var(--color-neutral-700);
-          background-color: var(--input-bg);
+          @apply bg-(--input-bg);
 
           & input:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
-            -webkit-text-fill-color: var(--color-neutral-0);
+            @apply shadow-[inset_0_0_0px_1000px_var(--input-bg)]! autofill:[-webkit-text-fill-color:var(--color-neutral-0)];
           }
         }
 
@@ -217,12 +215,10 @@
         }
   
         & input {
-          @apply w-full bg-transparent outline-none;
-          -webkit-text-fill-color: var(--color-neutral-0);
+          @apply w-full bg-transparent outline-none caret-neutral-0 autofill:[-webkit-text-fill-color:var(--color-neutral-0)];
 
           &:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
-            -webkit-text-fill-color: var(--color-neutral-0);
+            @apply shadow-[inset_0_0_0px_1000px_var(--input-bg)]! autofill:[-webkit-text-fill-color:var(--color-neutral-0)];
           }
         }
       }

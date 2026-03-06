@@ -198,7 +198,18 @@
       @apply w-full relative focus:outline-2 focus:outline-offset-4 focus:outline-neutral-0 focus:rounded-lg;
 
       & .search-input {
-        @apply w-full flex gap-4 rounded-lg bg-neutral-800 text-neutral-0 py-3.5 px-4 cursor-pointer hover:bg-neutral-700;
+        @apply w-full flex gap-4 rounded-lg text-neutral-0 py-3.5 px-4 cursor-pointer;
+        background-color: var(--color-neutral-800);
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: var(--color-neutral-700);
+
+          & input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px var(--color-neutral-700) inset !important;
+            -webkit-text-fill-color: var(--color-neutral-0);
+          }
+        }
 
         & img {
           @apply w-5.25 h-6;
@@ -206,9 +217,18 @@
   
         & input {
           @apply w-full bg-transparent outline-none;
+          -webkit-text-fill-color: var(--color-neutral-0);
+          transition: background-color 0.2s ease;
+
+          &:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px var(--color-neutral-800) inset !important;
+            box-shadow: 0 0 0 1000px var(--color-neutral-800) inset;
+            -webkit-text-fill-color: var(--color-neutral-0);
+          }
         }
       }
 
+      /*? Search Results & Dropdown */
       & .searched-suggestions {
         @apply absolute top-full left-0 right-0 bg-neutral-800 opacity-96 mt-4 py-2 px-2 cursor-pointer font-body text-body-size flex flex-col gap-1 z-50 rounded-lg shadow-lg border border-neutral-600 max-h-62.5 overflow-y-auto;
 
@@ -235,6 +255,7 @@
   
     }
 
+    /*? Search Button */
     & .search-btn {
       @apply bg-blue-500 text-neutral-0 px-6 py-3.5 rounded-lg cursor-pointer font-body hover:bg-blue-700 focus:outline-2 focus:outline-offset-4 focus:outline-blue-500 disabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-90;
     }

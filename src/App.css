@@ -199,14 +199,15 @@
 
       & .search-input {
         @apply w-full flex gap-4 rounded-lg text-neutral-0 py-3.5 px-4 cursor-pointer;
-        background-color: var(--color-neutral-800);
-        transition: background-color 0.2s ease;
+        --input-bg: var(--color-neutral-800);
+        background-color: var(--input-bg);
 
         &:hover {
-          background-color: var(--color-neutral-700);
+          --input-bg: var(--color-neutral-700);
+          background-color: var(--input-bg);
 
           & input:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 1000px var(--color-neutral-700) inset !important;
+            -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
             -webkit-text-fill-color: var(--color-neutral-0);
           }
         }
@@ -218,11 +219,9 @@
         & input {
           @apply w-full bg-transparent outline-none;
           -webkit-text-fill-color: var(--color-neutral-0);
-          transition: background-color 0.2s ease;
 
           &:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 1000px var(--color-neutral-800) inset !important;
-            box-shadow: 0 0 0 1000px var(--color-neutral-800) inset;
+            -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
             -webkit-text-fill-color: var(--color-neutral-0);
           }
         }

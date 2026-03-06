@@ -181,9 +181,9 @@ export const WeatherData = () => {
                 humidityUnit: weatherData.current_units.relative_humidity_2m
             });
 
-            //? D. Get daily and hourly forecasts
 
-            //? d(i). Get daily forecast from weatherData
+            //? D. Get daily and hourly forecasts
+            //* d(i). Get daily forecast from weatherData
             const getDailyForecast = weatherData.daily.time.map((time, index) => ({
                 date: formatDailyForecastDate(time), // "Wed", "Thu" etc - displayed in the daily forecast section, also used for filtering the hourly forecast for the selected day
                 longDate: formatWeekday(time), // "Wednesday" or "Thursday" etc - for displaying in the hourly section
@@ -193,7 +193,7 @@ export const WeatherData = () => {
             }));
             console.log(getDailyForecast);
 
-            //? d(ii). Get hourly forecast from weatherData
+            //* d(ii). Get hourly forecast from weatherData
             const getHourlyForecast = weatherData.hourly.time.map((time, index) => ({
                 day: formatWeekday(time), // "Wednesday" or "Thursday"
                 shortDay: formatDailyForecastDate(time), // "Wed" or "Thu" etc - for matching with the daily forecast date to filter the hourly forecast for the selected day
@@ -291,7 +291,7 @@ export const WeatherData = () => {
                 setErrorMessage={setErrorMessage}
             />
 
-            {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
+            {errorMessage && <p className='text-neutral-0'>{errorMessage}</p>}
 
             {/* Show the loading skeleton while the weather data is being fetched AND no weather data for a city has been fetched */}
             {isLoading ? 

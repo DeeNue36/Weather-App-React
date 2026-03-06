@@ -215,7 +215,7 @@
         }
   
         & input {
-          @apply w-full bg-transparent outline-none caret-neutral-0 autofill:[-webkit-text-fill-color:var(--color-neutral-0)];
+          @apply font-body font-medium text-body-size w-full bg-transparent outline-none caret-neutral-0 autofill:[-webkit-text-fill-color:var(--color-neutral-0)];
 
           &:-webkit-autofill {
             @apply shadow-[inset_0_0_0px_1000px_var(--input-bg)]! autofill:[-webkit-text-fill-color:var(--color-neutral-0)];

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { BASE_CITY_API_URL } from '../api';
 import { Spinner } from './Spinner';
 
-export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData, errorMessage, setErrorMessage }) => {
+export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData, setErrorMessage }) => {
     const [citySuggestions, setCitySuggestions] = useState([]); // Array of city suggestions
     const [showSuggestedCities, setShowSuggestedCities] = useState(false); // state to control visibility of suggested cities
     const [isSearching, setIsSearching] = useState(false); // state to control visibility of spinner
@@ -68,15 +68,10 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
         }
     }
 
-    //? Handle input changes: clear error message and close dropdown when user types
+    //? Handle input changes: close dropdown when user types
     const handleInputChange = (e) => {
         const value = e.target.value;
         setSearchCity(value);
-
-        // Clear error message when user starts typing
-        if (errorMessage) {
-            setErrorMessage('');
-        }
 
         // Close dropdown when user clears/deletes the search input
         if (value.trim() === '') {
@@ -88,6 +83,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
 
     //? Show weather data for a city suggestion that is clicked
     const handleCitySuggestionClick = (city) => {
+        setErrorMessage(''); // Clear any previous error message since a valid city suggestion is selected
         setSearchCity(city.name);
         fetchWeatherData(city.name, {latitude: city.latitude, longitude: city.longitude});
         setIsSearching(false);
@@ -98,6 +94,9 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
     //? Handle Input Submission (Enter key or Search button click)
     const handleSearch = (e) => {
         e?.preventDefault(); // Prevent default form submission behavior
+
+        //Clear any previous error message before starting a new search
+        setErrorMessage('');
 
         // Only fetch suggestions if there's input
         if (searchCity && searchCity.trim().length >= 2) {
@@ -122,6 +121,8 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
             setShowSuggestedCities(false);
         }
     };
+
+    //TODO: When there's an error or invalid search query, hide weather data UI and only show the error message. Currently, the weather data UI is still shown with the previous city's weather data, which can be confusing for users as they might think the weather data is for the new city they searched for instead of realizing there's an error with their search query.    
 
 
     return (

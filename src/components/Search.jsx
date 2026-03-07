@@ -120,9 +120,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
         if (e.key === 'Escape') {
             setShowSuggestedCities(false);
         }
-    };
-
-    //TODO: When there's an error or invalid search query, hide weather data UI and only show the error message. Currently, the weather data UI is still shown with the previous city's weather data, which can be confusing for users as they might think the weather data is for the new city they searched for instead of realizing there's an error with their search query.    
+    };   
 
 
     return (

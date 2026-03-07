@@ -308,7 +308,7 @@ export const WeatherData = () => {
                 ) 
             :
                 // * Actual Weather Data
-                !weather.city  ? null : (
+                !weather.city || errorMessage  ? null : (
                     <div className='weather-box'>
                         <div className="weather-daily">
 

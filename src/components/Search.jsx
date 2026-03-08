@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { BASE_CITY_API_URL } from '../api';
 import { Spinner } from './Spinner';
 
-export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData, setErrorMessage }) => {
+export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData, setErrorMessage, onSearchStart }) => {
     const [citySuggestions, setCitySuggestions] = useState([]); // Array of city suggestions
     const [showSuggestedCities, setShowSuggestedCities] = useState(false); // state to control visibility of suggested cities
     const [isSearching, setIsSearching] = useState(false); // state to control visibility of spinner
@@ -95,15 +95,18 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
     const handleSearch = (e) => {
         e?.preventDefault(); // Prevent default form submission behavior
 
-        //Clear any previous error message before starting a new search
+        //* Clear any previous error message before starting a new search
         setErrorMessage('');
 
-        // Only fetch suggestions if there's input
+        //* Notify parent component that a search has started
+        if (onSearchStart) onSearchStart(); 
+
+        //* Only fetch suggestions if there's enough input
         if (searchCity && searchCity.trim().length >= 2) {
             fetchCitySuggestions(searchCity);
         }
         else {
-            // If no input or query too short show error message
+            //* If no input or query too short show error message
             setErrorMessage('Please enter a valid city name.');
         }
         // else if (!searchCity || searchCity.trim().length < 2){

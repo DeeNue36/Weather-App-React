@@ -102,13 +102,17 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
         if (searchCity && searchCity.trim().length >= 2) {
             fetchCitySuggestions(searchCity);
         }
-        else if (!searchCity || searchCity.trim().length < 2){
+        else {
             // If no input or query too short show error message
             setErrorMessage('Please enter a valid city name.');
         }
-        else {
-            fetchWeatherData(searchCity);
-        }
+        // else if (!searchCity || searchCity.trim().length < 2){
+        //     // If no input or query too short show error message
+        //     setErrorMessage('Please enter a valid city name.');
+        // }
+        // else {
+        //     fetchWeatherData(searchCity);
+        // }
     };
 
 

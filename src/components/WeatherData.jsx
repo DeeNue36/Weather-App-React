@@ -277,22 +277,15 @@ export const WeatherData = () => {
         }
     }, [hourlyForecast, selectedDay]);
 
-    //? i. Reset awaitingSelection flag state when an error occurs
+    //? i. Reset awaitingSelection flag state when an error occurs or the search input is cleared
     useEffect(() => {
-        if (errorMessage) {
+        if (errorMessage || searchCity.trim() === '') {
             // Reset awaitingSelection state when an error occurs
             setAwaitingSelection(false); 
         }
-    }, [errorMessage]);
+    }, [errorMessage, searchCity]);
 
-    //? j. ALso reset awaitingSelection flag state when the search input is cleared
-    useEffect(() => {
-        if (searchCity.trim() === '') {
-            setAwaitingSelection(false);
-        }
-    }, [searchCity]);
-
-    //? k. Get filtered hourly forecast for any selected day
+    //? j. Get filtered hourly forecast for any selected day
     const getFilteredHourlyForecast = () => {
         if (!selectedDay || hourlyForecast.length === 0) return hourlyForecast;
 
@@ -301,14 +294,14 @@ export const WeatherData = () => {
     }
 
 
-    //? l. Calculate display values using the conversion functions
+    //? k. Calculate display values using the conversion functions
     //* Calculated on every render based on the units prop
     const displayTemperature = convertTemperature(weather.temperature || 0, units.temperature);
     const displayFeelsLike = convertTemperature(weather.feelsLike || 0, units.temperature);
     const displayWindSpeed = convertWindSpeed(weather.windSpeed || 0, units.wind);
     const displayPrecipitation = convertPrecipitation(weather.precipitation || 0, units.precipitation);
 
-    //? m. Convert daily and hourly temperatures
+    //? l. Convert daily and hourly temperatures
     const convertDailyMinTemp = (temp) => convertTemperature(temp, units.temperature);
     const convertDailyMaxTemp = (temp) => convertTemperature(temp, units.temperature);
     const convertHourlyTemp = (temp) => convertTemperature(temp, units.temperature);

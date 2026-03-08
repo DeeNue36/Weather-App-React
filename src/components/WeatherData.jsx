@@ -20,15 +20,31 @@ from '../utilities/unitConversions';
 
 
 export const WeatherData = () => {
-    const { units } = useUnits();
+    const { units } = useUnits(); // Get the user's preferred units from context
+
+    //* State for tracking the city name entered in the search input
     const [searchCity, setSearchCity] = useState('');
+
+    //* State for weather data
     const [weather, setWeather] = useState({});
+
+    //* State for daily and hourly forecasts
     const [dailyForecast, setDailyForecast] = useState([]);
     const [hourlyForecast, setHourlyForecast] = useState([]);
+
+    //* State for selected day in the hourly forecast section, default to the first day of the daily forecast if available
     const [selectedDay, setSelectedDay] = useState(dailyForecast[0]?.date || '');
+
+    //* State for error handling
     const [errorMessage, setErrorMessage] = useState('');
+
+    //* State to track loading status of the weather data
     const [isLoading, setIsLoading] = useState(false);
+
+    //* State to track if there was an API error to conditionally render the API error component
     const [apiError, setApiError] = useState(false);
+
+    //* State to track the last query and coordinates used for fetching weather data, to allow retrying the same query in case of an API error
     const [lastQuery, setLastQuery] = useState('');
     const [lastCoords, setLastCoords] = useState(null);
 

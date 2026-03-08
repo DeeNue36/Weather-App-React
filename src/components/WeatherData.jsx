@@ -48,6 +48,9 @@ export const WeatherData = () => {
     const [lastQuery, setLastQuery] = useState('');
     const [lastCoords, setLastCoords] = useState(null);
 
+    //* State to track if the app is waiting for the user to select a city from the suggestions dropdown
+    const [awaitingSelection, setAwaitingSelection] = useState(false); 
+
 
     //? A. Get the user's location coordinates using the browser
     const getUserLocation = () => {
@@ -112,6 +115,7 @@ export const WeatherData = () => {
 
     // ? C. Fetch weather data
     const fetchWeatherData = useCallback( async(query='', coords = null) => {
+        setAwaitingSelection(false); // Reset awaitingSelection state whenever a new search is initiated
         setIsLoading(true);
         setErrorMessage('');
         setApiError(false);
@@ -273,7 +277,22 @@ export const WeatherData = () => {
         }
     }, [hourlyForecast, selectedDay]);
 
-    //? i. Get filtered hourly forecast for any selected day
+    //? i. Reset awaitingSelection flag state when an error occurs
+    useEffect(() => {
+        if (errorMessage) {
+            // Reset awaitingSelection state when an error occurs
+            setAwaitingSelection(false); 
+        }
+    }, [errorMessage]);
+
+    //? j. ALso reset awaitingSelection flag state when the search input is cleared
+    useEffect(() => {
+        if (searchCity.trim() === '') {
+            setAwaitingSelection(false);
+        }
+    }, [searchCity]);
+
+    //? k. Get filtered hourly forecast for any selected day
     const getFilteredHourlyForecast = () => {
         if (!selectedDay || hourlyForecast.length === 0) return hourlyForecast;
 
@@ -282,14 +301,14 @@ export const WeatherData = () => {
     }
 
 
-    //? j. Calculate display values using the conversion functions
+    //? l. Calculate display values using the conversion functions
     //* Calculated on every render based on the units prop
     const displayTemperature = convertTemperature(weather.temperature || 0, units.temperature);
     const displayFeelsLike = convertTemperature(weather.feelsLike || 0, units.temperature);
     const displayWindSpeed = convertWindSpeed(weather.windSpeed || 0, units.wind);
     const displayPrecipitation = convertPrecipitation(weather.precipitation || 0, units.precipitation);
 
-    //? k. Convert daily and hourly temperatures
+    //? m. Convert daily and hourly temperatures
     const convertDailyMinTemp = (temp) => convertTemperature(temp, units.temperature);
     const convertDailyMaxTemp = (temp) => convertTemperature(temp, units.temperature);
     const convertHourlyTemp = (temp) => convertTemperature(temp, units.temperature);
@@ -305,12 +324,13 @@ export const WeatherData = () => {
                 fetchWeatherData={fetchWeatherData} 
                 errorMessage={errorMessage} 
                 setErrorMessage={setErrorMessage}
+                onSearchStart={() => setAwaitingSelection(true)}
             />
 
             {errorMessage && <p className='text-neutral-0'>{errorMessage}</p>}
 
             {/* Show the loading skeleton while the weather data is being fetched AND no weather data for a city has been fetched */}
-            {isLoading ? 
+            {isLoading || awaitingSelection ? 
                 (
                     // * Loading Skeleton
                     <Skeleton />
@@ -324,7 +344,8 @@ export const WeatherData = () => {
                 ) 
             :
                 // * Actual Weather Data
-                !weather.city || errorMessage  ? null : (
+                //? Only show the weather data if there is a city to display OR there is no error message OR the app is not waiting for the user to select a city from the suggestions dropdown
+                !weather.city || errorMessage || awaitingSelection ? null : (
                     <div className='weather-box'>
                         <div className="weather-daily">
 

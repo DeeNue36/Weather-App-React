@@ -341,7 +341,7 @@ export const WeatherData = () => {
                 onSearchStart={() => setAwaitingSelection(true)}
             />
 
-            {errorMessage && <p className='text-neutral-0'>{errorMessage}</p>}
+            {errorMessage && !apiError && <p className='text-neutral-0'>{errorMessage}</p>}
 
             {/* Show the loading skeleton while the weather data is being fetched AND no weather data for a city has been fetched */}
             {isLoading || awaitingSelection ? 

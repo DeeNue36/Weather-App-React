@@ -102,7 +102,7 @@ export const WeatherData = () => {
             const bdc_data = await bdc_response.json();
             console.log(bdc_data);
             return {
-                cityName: bdc_data.locality || bdc_data.city || bdc_data.principalSubdivision || 'Unknown Location',
+                cityName: bdc_data.city || bdc_data.locality || bdc_data.principalSubdivision || 'Unknown Location',
                 country: bdc_data.countryName || '',
             };
         } 

@@ -67,14 +67,18 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
             setIsSearching(false); // stop spinner if there's an error
         }
     }
-    
+
 
     //? Handle input changes: close dropdown when user types
     const handleInputChange = (e) => {
         const value = e.target.value;
         setSearchCity(value);
 
-        // Close dropdown when user clears/deletes the search input
+        // Close dropdown when user types or changes the search input -- re enables button so that user can perform a new search with the updated input
+        setShowSuggestedCities(false);
+        setCitySuggestions([]);
+
+        // Same as above but close dropdown when user clears/deletes the entire search input
         if (value.trim() === '') {
             setShowSuggestedCities(false);
             setCitySuggestions([]);

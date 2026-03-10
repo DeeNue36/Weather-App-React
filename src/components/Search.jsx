@@ -67,6 +67,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
             setIsSearching(false); // stop spinner if there's an error
         }
     }
+    
 
     //? Handle input changes: close dropdown when user types
     const handleInputChange = (e) => {
@@ -109,13 +110,6 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
             //* If no input or query too short show error message
             setErrorMessage('Please enter a valid city name.');
         }
-        // else if (!searchCity || searchCity.trim().length < 2){
-        //     // If no input or query too short show error message
-        //     setErrorMessage('Please enter a valid city name.');
-        // }
-        // else {
-        //     fetchWeatherData(searchCity);
-        // }
     };
 
 

@@ -85,7 +85,7 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
     const handleCitySuggestionClick = (city) => {
         setErrorMessage(''); // Clear any previous error message since a valid city suggestion is selected
         setSearchCity(city.name);
-        fetchWeatherData(city.name, {latitude: city.latitude, longitude: city.longitude});
+        fetchWeatherData(city, {latitude: city.latitude, longitude: city.longitude});
         setIsSearching(false);
         setShowSuggestedCities(false); // Close dropdown
     };

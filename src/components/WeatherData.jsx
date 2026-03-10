@@ -169,7 +169,7 @@ export const WeatherData = () => {
                     const cityData = await cityResponse.json();
                     console.log(cityData);
         
-                    if(!cityData.results || cityData.results.length === 0) {
+                    if(!cityData.results?.length) {
                         throw new Error('City not found');
                     }
         

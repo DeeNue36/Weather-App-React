@@ -102,6 +102,7 @@ export const WeatherData = () => {
             const bdc_data = await bdc_response.json();
             console.log(bdc_data);
             return {
+                // culprit for different city name when a city is selected from the dropdown -- locality
                 cityName: bdc_data.city || bdc_data.locality || bdc_data.principalSubdivision || 'Unknown Location',
                 country: bdc_data.countryName || '',
             };
@@ -123,7 +124,7 @@ export const WeatherData = () => {
         setLastCoords(coords);
 
         try {
-            //* Making the latitude, longitude, name, and country variables globally available to the rest of the function
+            //* Make the latitude, longitude, name, and country variables globally available to the rest of the try function block
             let latitude, longitude, name, country;
 
             //? a. Get the user's location which will be displayed as the initial city/location
@@ -132,33 +133,53 @@ export const WeatherData = () => {
                 latitude = coords.latitude;
                 longitude = coords.longitude;
 
-                //* Get city name from coordinates via reverse geocoding
-                const cityInfo = await getCityFromCoords(latitude, longitude);
-                name = cityInfo.cityName;
-                country = cityInfo.country;
+                //* Check is query is an object from the city suggestions dropdown and has a name property
+                if (query && typeof query === 'object' && query.name) {
+                    //? if available directly use the city name and country from the query object  (when a city suggestion is clicked)
+                    name = query.name;
+                    country = query.country || '';
+                }
+                else {
+                    //* From coordinates use reverse geocoding to get the city name and country
+                    const cityInfo = await getCityFromCoords(latitude, longitude);
+                    name = cityInfo.cityName;
+                    country = cityInfo.country;
+                }
+
             }
             //? b. Get the city name from the search query
             else {
-                //? b(i). Use the search query to get location/city
-                const endpoint = `${BASE_CITY_API_URL}name=${encodeURIComponent(query)}`;
-    
-                const cityResponse = await fetch(endpoint);
-                if(!cityResponse.ok) {
-                    throw new Error('Failed to fetch city data');
+
+                //? b(i) When a city suggestion is clicked, check if query is an object and has a name property
+                if (query && typeof query === 'object' && query.name) {
+                    //? if available directly use the city name and country from the query object  (when a city suggestion is clicked)
+                    latitude = query.latitude;
+                    longitude = query.longitude;
+                    name = query.name;
+                    country = query.country || '';
                 }
-    
-                const cityData = await cityResponse.json();
-                console.log(cityData);
-    
-                if(!cityData.results || cityData.results.length === 0) {
-                    throw new Error('City not found');
+                else {
+                    //? b(ii). Use the search query to get location/city
+                    const endpoint = `${BASE_CITY_API_URL}name=${encodeURIComponent(query)}`;
+        
+                    const cityResponse = await fetch(endpoint);
+                    if(!cityResponse.ok) {
+                        throw new Error('Failed to fetch city data');
+                    }
+        
+                    const cityData = await cityResponse.json();
+                    console.log(cityData);
+        
+                    if(!cityData.results || cityData.results.length === 0) {
+                        throw new Error('City not found');
+                    }
+        
+                    const city = cityData.results[0]
+                    latitude = city.latitude;
+                    longitude = city.longitude;
+                    name = city.name;
+                    country = city.country;
                 }
-    
-                const city = cityData.results[0]
-                latitude = city.latitude;
-                longitude = city.longitude;
-                name = city.name;
-                country = city.country;
             }
 
             //? c. Get the weather data for the city

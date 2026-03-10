@@ -102,7 +102,6 @@ export const WeatherData = () => {
             const bdc_data = await bdc_response.json();
             console.log(bdc_data);
             return {
-                // culprit for different city name when a city is selected from the dropdown -- locality
                 cityName: bdc_data.city || bdc_data.locality || bdc_data.principalSubdivision || 'Unknown Location',
                 country: bdc_data.countryName || '',
             };
@@ -177,7 +176,8 @@ export const WeatherData = () => {
                     const city = cityData.results[0]
                     latitude = city.latitude;
                     longitude = city.longitude;
-                    name = city.name;
+                    // name = city.name;
+                    name = query; // Display the user's search query as the city name to avoid confusion when the API returns a different city name for the same location (e.g. "New York" vs "New York City")
                     country = city.country;
                 }
             }

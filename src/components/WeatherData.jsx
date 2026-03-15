@@ -377,15 +377,13 @@ export const WeatherData = () => {
                                 </div>
 
                                 <div className="condition-and-temperature">
-                                    <div className="condition">
-                                        {weather.weatherCode !== undefined && (
-                                            <img
-                                                src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'}
-                                                alt={weatherDescriptions(weather.weatherCode)}
-                                                className="weather-icon"
-                                            />
-                                        )}
-                                    </div>
+                                    {weather.weatherCode !== undefined && (
+                                        <img
+                                            src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'}
+                                            alt={weatherDescriptions(weather.weatherCode)}
+                                            className="weather-icon"
+                                        />
+                                    )}
                                     <div className="temperature">
                                         {weather.temperature &&
                                             <h1>

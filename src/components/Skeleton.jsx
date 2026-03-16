@@ -67,7 +67,7 @@ export const Skeleton = () => {
                         </div>
                     </div>
 
-                    <div className="hourly-weather-forecast h-[unset]">
+                    <div className="hourly-weather-forecast">
                         {[...Array(24)].map((_, i) => (
                             <div className="skeleton-hourly-card" key={i}></div>
                         ))}

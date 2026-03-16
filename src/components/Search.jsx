@@ -102,12 +102,13 @@ export const Search = ({ searchCity, setSearchCity, isLoading, fetchWeatherData,
 
         //* Clear any previous error message before starting a new search
         setErrorMessage('');
-
-        //* Notify parent component that a search has started
-        if (onSearchStart && searchCity.trim().length >= 2) onSearchStart(); 
-
+        
         //* Only fetch suggestions if there's enough input
         if (searchCity && searchCity.trim().length >= 2) {
+            //? Notify parent component that a search has started
+            if (onSearchStart) onSearchStart();
+            
+            //? Fetch city suggestions
             fetchCitySuggestions(searchCity);
         }
         else {

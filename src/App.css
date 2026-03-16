@@ -111,7 +111,7 @@
   }
 
   main {
-    @apply flex flex-col items-center justify-center w-full xs:p-2.5 s:p-4 xl:p-10;
+    @apply flex flex-col min-h-dvh items-center justify-center w-full xs:px-2.5 xs:pt-10 xs:pb-20 s:px-4 xl:p-10;
   }
 }
 
@@ -120,7 +120,7 @@
 
 @layer components {
   .container {
-    @apply sd:max-w-full! xl:max-w-360! flex flex-col items-center justify-center min-h-dvh;
+    @apply sd:max-w-full! sm:max-w-[84%]! md:max-w-[72%]! xl:max-w-360! flex flex-col items-center justify-start min-h-dvh;
 
     & > h1 {
       @apply text-6xl mb-16 text-center;
@@ -217,7 +217,7 @@
         }
   
         & input {
-          @apply font-body font-medium text-body-size w-full bg-transparent outline-none caret-neutral-0 autofill:[-webkit-text-fill-color:var(--color-neutral-0)];
+          @apply font-body font-medium border-none text-body-size w-full bg-transparent outline-none caret-neutral-0 autofill:[-webkit-text-fill-color:var(--color-neutral-0)];
 
           &:-webkit-autofill {
             @apply shadow-[inset_0_0_0px_1000px_var(--input-bg)]! autofill:[-webkit-text-fill-color:var(--color-neutral-0)]!;
@@ -280,7 +280,7 @@
 
   /*? Weather Data Display Boxes */
   .weather-box {
-    @apply w-full h-220 flex flex-col xl:flex-row gap-8;
+    @apply w-full h-220 flex flex-col xl:flex-row gap-8 mb-20 xl:mb-0;
 
     & .weather-daily, .weather-hourly {
       @apply flex flex-col gap-8 xl:gap-4;
@@ -327,10 +327,10 @@
 
       /*? Actual Location Weather Data Styling */
       & .location-weather {
-        @apply w-full h-[23.2rem] bg-mobile xl:bg-desktop bg-no-repeat bg-cover rounded-3xl flex flex-col xl:flex-row items-center justify-center gap-10 xl:justify-between py-6 px-4 xl:p-8;
+        @apply w-full h-[23.2rem] bg-mobile sm:bg-desktop bg-no-repeat bg-cover rounded-3xl flex flex-col xl:flex-row items-center justify-center gap-10 xl:justify-between py-6 px-4 xl:p-8;
 
         & .city-and-date {
-          @apply flex flex-col items-center text-center xl:items-start gap-y-4 xl:gap-y-2;
+          @apply flex flex-col items-center text-center xl:text-left xl:items-start gap-y-4 xl:gap-y-2;
 
           & h4.location {
             @apply text-3xl xl:text-2xl;
@@ -355,7 +355,7 @@
       }
 
       & .location-weather-details {
-        @apply grid grid-cols-2 gap-3 xl:flex xl:gap-4 xl:h-32;
+        @apply grid grid-cols-2 gap-3 md:grid-cols-3 xl:flex xl:gap-4 xl:h-32;
       }
 
       & .feels-like, .humidity, .wind-speed, .precipitation {
@@ -366,7 +366,7 @@
         }
 
         & span {
-          @apply text-4xl font-light;
+          @apply text-3xl sm:text-4xl font-light;
         }
       }
 
@@ -379,7 +379,7 @@
         }
 
         & .days-forecasts {
-          @apply grid grid-cols-3 gap-3 xl:flex xl:gap-4 xl:items-center;
+          @apply grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 xl:flex xl:gap-4 xl:items-center;
 
           & .day {
             @apply w-full flex flex-col items-center justify-between gap-2 py-4 px-2 xl:p-4 border border-neutral-600;
@@ -402,7 +402,7 @@
 
     /* ? Hourly Forecasts */
     & .weather-hourly {
-      @apply w-full xl:w-[30%] h-full;
+      @apply w-full xl:w-[30%] h-full pb-20 xl:pb-0;
 
       & .location-hourly-forecast {
         @apply p-3.5 xl:p-6 h-full overflow-y-auto;  

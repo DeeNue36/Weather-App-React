@@ -181,7 +181,7 @@ export const WeatherData = () => {
             }
 
             //? c. Get the weather data for the city
-            const weatherDataEndpoint = `${BASE_WEATHER_API_URL}latitude=${latitude}&longitude=${longitude}&forecast_days=7&daily=temperature_2m_min,temperature_2m_max,weather_code&hourly=,weather_code,temperature_2m&current=is_day,apparent_temperature,relative_humidity_2m,temperature_2m,snowfall,showers,rain,precipitation,wind_speed_10m,weather_code&timezone=auto`; //OR &current_weather=true
+            const weatherDataEndpoint = `${BASE_WEATHER_API_URL}latitude=${latitude}&longitude=${longitude}&forecast_days=7&daily=temperature_2m_min,temperature_2m_max,weather_code&hourly=weather_code,temperature_2m&current=is_day,apparent_temperature,relative_humidity_2m,temperature_2m,snowfall,showers,rain,precipitation,wind_speed_10m,weather_code&timezone=auto`; //OR &current_weather=true
 
             const weatherResponse = await fetch(weatherDataEndpoint);
             if(!weatherResponse.ok) {

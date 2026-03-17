@@ -6,6 +6,7 @@
   font-style: normal;
   font-weight: 700;
   src: url("./assets/fonts/Bricolage_Grotesque/static/BricolageGrotesque-Bold.ttf");
+  font-display: swap;
 }
 
 /** Body Fonts */
@@ -15,6 +16,7 @@
   font-style: normal;
   font-weight: 300;
   src: url("./assets/fonts/DM_Sans/static/DMSans-Light.ttf");
+  font-display: swap;
 }
 
 /* Medium (Regular) Weight */
@@ -23,6 +25,7 @@
   font-style: normal;
   font-weight: 500;
   src: url("./assets/fonts/DM_Sans/static/DMSans-Medium.ttf");
+  font-display: swap;
 }
 
 /* SemiBold Weight */
@@ -31,6 +34,7 @@
   font-style: normal;
   font-weight: 600;
   src: url("./assets/fonts/DM_Sans/static/DMSans-SemiBold.ttf");
+  font-display: swap;
 }
 
 /* SemiBold Italic Weight */
@@ -39,6 +43,7 @@
   font-style: italic;
   font-weight: 600;
   src: url("./assets/fonts/DM_Sans/static/DMSans-SemiBoldItalic.ttf");
+  font-display: swap;
 }
 
 /* Bold Weight */
@@ -47,6 +52,7 @@
   font-style: normal;
   font-weight: 700;
   src: url("./assets/fonts/DM_Sans/static/DMSans-Bold.ttf");
+  font-display: swap;
 }
 
 @theme {
@@ -79,15 +85,15 @@
 
   --animate-jump: jump 1s ease-in-out infinite;
   @keyframes jump {
-  0%, 100% {
-    transform: translateY(-48%);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    0%, 100% {
+      transform: translateY(-48%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
   }
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  }
-}
 
 }
 
@@ -115,8 +121,6 @@
   }
 }
 
-@layer utilities {
-}
 
 @layer components {
   .container {

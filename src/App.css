@@ -415,11 +415,11 @@
           @apply flex items-center justify-between;
 
           & .days-dropdown {
-            @apply w-40 relative;
+            @apply relative;
           }
 
           & .days-dropdown-selected {
-            @apply bg-neutral-600 flex items-center justify-between cursor-pointer rounded-lg py-2.5 px-4 text-neutral-0 font-body text-body-size hover:bg-neutral-700;
+            @apply w-40 bg-neutral-600 flex items-center justify-between cursor-pointer rounded-lg py-2.5 px-4 text-neutral-0 font-body text-body-size hover:bg-neutral-700;
 
             & img {
               @apply w-4 h-4;
@@ -436,10 +436,10 @@
         }
 
         & .hourly-weather-forecast {
-          @apply flex flex-col gap-y-4.5 mt-5 overflow-y-scroll h-[90%] xl:h-[92%];
+          @apply flex flex-col gap-y-4.5 items-center mt-5 pt-1.5 overflow-y-scroll h-[90%] xl:h-[92%];
 
           & .weather-hour-card {
-            @apply bg-neutral-700 flex items-center justify-between rounded-lg py-1 pr-4 pl-1 border border-neutral-600;
+            @apply w-[98%] bg-neutral-700 flex items-center justify-between rounded-lg py-1 pr-4 pl-1 border border-neutral-600 focus:outline focus:outline-offset-2 focus:outline-neutral-0 ring-2 ring-transparent;
 
             & .hour {
               @apply flex items-center gap-2;

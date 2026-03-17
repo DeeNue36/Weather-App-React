@@ -100,7 +100,6 @@ export const WeatherData = () => {
             }
     
             const bdc_data = await bdc_response.json();
-            console.log(bdc_data);
             return {
                 cityName: bdc_data.city || bdc_data.locality || bdc_data.principalSubdivision || 'Unknown Location',
                 country: bdc_data.countryName || '',
@@ -167,7 +166,6 @@ export const WeatherData = () => {
                     }
         
                     const cityData = await cityResponse.json();
-                    console.log(cityData);
         
                     if(!cityData.results?.length) {
                         throw new Error('City not found');
@@ -191,7 +189,6 @@ export const WeatherData = () => {
             }
 
             const weatherData = await weatherResponse.json();
-            console.log(weatherData);
             if (!weatherData.current) {
                 setErrorMessage('No weather data found for this location.');
                 setIsLoading(false);
@@ -232,7 +229,6 @@ export const WeatherData = () => {
                 maxTemp: weatherData.daily.temperature_2m_max[index],
                 weatherCode: weatherData.daily.weather_code[index]
             }));
-            console.log(getDailyForecast);
 
             //* d(ii). Get hourly forecast from weatherData
             const getHourlyForecast = weatherData.hourly.time.map((time, index) => ({
@@ -242,7 +238,6 @@ export const WeatherData = () => {
                 temperature: weatherData.hourly.temperature_2m[index],
                 weatherCode: weatherData.hourly.weather_code[index]
             }));
-            console.log(getHourlyForecast);
 
             setDailyForecast(getDailyForecast);
             setHourlyForecast(getHourlyForecast);

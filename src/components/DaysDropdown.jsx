@@ -28,13 +28,13 @@ export const DaysDropdown = ({options, selected, onChange}) => {
 
     return (
         <div className="days-dropdown" ref={dropdownRef}>
-            <span 
+            <button 
                 className="days-dropdown-selected" 
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {selected || 'Select a day'}
                 <img src="/icon-dropdown.svg" alt="dropdown icon" />
-            </span>
+            </button>
             {isOpen && (
                 <ul className="days-dropdown-options">
                     {options.map((option, index) => (

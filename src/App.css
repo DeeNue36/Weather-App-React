@@ -436,7 +436,7 @@
         }
 
         & .hourly-weather-forecast {
-          @apply flex flex-col gap-y-4.5 mt-5 overflow-y-scroll h-[90%];
+          @apply flex flex-col gap-y-4.5 mt-5 overflow-y-scroll h-[90%] xl:h-[92%];
 
           & .weather-hour-card {
             @apply bg-neutral-700 flex items-center justify-between rounded-lg py-1 pr-4 pl-1 border border-neutral-600;

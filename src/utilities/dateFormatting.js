@@ -35,7 +35,6 @@ const formatHourlyForecastTime = (timeString) => {
     return date.toLocaleTimeString('en-US', {
         hour: 'numeric',
         hour12: true,
-        ampm: true
     });
 };
 

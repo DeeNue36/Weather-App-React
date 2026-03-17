@@ -463,7 +463,18 @@ export const WeatherData = () => {
                                 <div className="hourly-weather-forecast">
                                     {getFilteredHourlyForecast().map((hour, index) => {
                                         return (
-                                            <div className="weather-hour-card" key={index}>
+                                            <div className="weather-hour-card" 
+                                                key={index}
+                                                tabIndex={0}
+                                                role='button'
+                                                aria-label={`Hourly forecast for ${hour.time}, ${convertHourlyTemp(hour.temperature)}${weather.temperatureUnit} ${weatherDescriptions(hour.weatherCode)}`}
+                                                onKeyDown={(e) => {
+                                                    // keyboard handlers
+                                                    if (e.key === 'Enter' || e.key === '') {
+                                                        e.preventDefault();
+                                                    }
+                                                }}
+                                            >
                                                 <div className="hour">
                                                     { hour.weatherCode !== undefined && (
                                                         <img

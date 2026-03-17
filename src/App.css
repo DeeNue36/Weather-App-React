@@ -336,7 +336,7 @@
         & .city-and-date {
           @apply flex flex-col items-center text-center xl:text-left xl:items-start gap-y-4 xl:gap-y-2;
 
-          & h1.location {
+          & h2.location {
             @apply text-3xl xl:text-2xl;
           }
 
@@ -352,7 +352,7 @@
             @apply w-24 h-24 sd:w-28 sd:h-28 xl:w-32 xl:h-32;
           }
 
-          & .temperature h1 {
+          & .temperature h3 {
             @apply text-[6rem] xl:text-[6.4rem] italic font-light font-body;
           }
         }

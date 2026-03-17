@@ -361,11 +361,11 @@ export const WeatherData = () => {
                             {/* TODO: Turn this into a component */}
                             <div className="location-weather">
                                 <div className="city-and-date">
-                                    <h1 className="location">
+                                    <h2 className="location">
                                     {/* Display user's location initially when the search query is empty */}
                                     {/* Only display the comma if there is a country */}
                                         {weather.city}{weather.country && `, ${weather.country}`}  
-                                    </h1>
+                                    </h2>
                                     <span className="date">
                                         {weather.dateTime && formatDate(weather.dateTime)}
                                     </span>
@@ -381,9 +381,9 @@ export const WeatherData = () => {
                                     )}
                                     <div className="temperature">
                                         {weather.temperature &&
-                                            <h1>
+                                            <h3>
                                                 {displayTemperature}{weather.temperatureUnit}
-                                            </h1>
+                                            </h3>
                                         }
                                     </div>
                                 </div>

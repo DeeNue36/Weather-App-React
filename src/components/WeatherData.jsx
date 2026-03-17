@@ -470,7 +470,7 @@ export const WeatherData = () => {
                                                 aria-label={`Hourly forecast for ${hour.time}, ${convertHourlyTemp(hour.temperature)}${weather.temperatureUnit} ${weatherDescriptions(hour.weatherCode)}`}
                                                 onKeyDown={(e) => {
                                                     // keyboard handlers
-                                                    if (e.key === 'Enter' || e.key === '') {
+                                                    if (e.key === 'Enter' || e.key === ' ') {
                                                         e.preventDefault();
                                                     }
                                                 }}

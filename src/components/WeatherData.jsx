@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { BASE_CITY_API_URL, BASE_WEATHER_API_URL, BDC_API_KEY, BDC_REVERSE_GEOCODING_API_URL } from '../api';
+import { BASE_CITY_API_URL, BASE_WEATHER_API_URL  } from '../api';
 import { useUnits } from '../context/UnitsContext';
 import { Search } from './Search';
 import { Skeleton } from './Skeleton';
@@ -78,11 +78,10 @@ export const WeatherData = () => {
     const getCityFromCoords = async (lat, lon) => {
         try {
             //* Big Data Cloud reverse geocode API
-            const bdc_endpoint = `${BDC_REVERSE_GEOCODING_API_URL}latitude=${lat}&longitude=${lon}&localityLanguage=en&key=${BDC_API_KEY}`; 
+            const bdc_endpoint = `/api/reverse-geocode?latitude=${lat}&longitude=${lon}`;
 
             //* Alternatives
             // const endpoint = `${REVERSE_GEOCODING_API_URL}lat=${lat}&lon=${lon}&format=json`;
-            // const bdc_endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
             const FALLBACK_GEOCODING_ENDPOINT = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 

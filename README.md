@@ -100,6 +100,10 @@ const bdc_endpoint = `/api/reverse-geocode?latitude=${lat}&longitude=${lon}`;
 4. Publish dir: `dist`.
 5. `netlify.toml` auto-configures functions dir (`netlify/functions`).
 
+**Other platforms** (Vercel, GitHub Pages, etc.): Modify proxy:
+- Replace `/api/reverse-geocode` in WeatherData.jsx with your serverless endpoint.
+- Adapt `netlify.toml` redirects/functions to platform equiv (no serverless = use public fallback).
+
 **Serverless Functions**: 
 - `netlify/functions/reverse-geocode.js`: Proxies Big Data Cloud (`https://api-bdc.net/data/reverse-geocode?...&key=${process.env.BDC_API_KEY}`).
 - `netlify.toml`: Redirects `/api/reverse-geocode` → `/.netlify/functions/reverse-geocode`.

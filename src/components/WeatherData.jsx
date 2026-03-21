@@ -6,9 +6,11 @@ import { Skeleton } from './Skeleton';
 import { weatherIcons } from '../weatherIcons';
 import { weatherDescriptions } from '../weatherDescriptions';
 import { LocationWeather } from './LocationWeather';
+import { LocationWeatherDetails } from './LocationWeatherDetails';
 import { DailyForecasts } from './DailyForecasts';
 import { DaysDropdown } from './DaysDropdown';
 import { ApiError } from './ApiError';
+import { HourlyForecast } from './HourlyForecast';
 import { formatDate, 
         formatDailyForecastDate, 
         formatWeekday, 
@@ -259,7 +261,10 @@ export const WeatherData = () => {
         }
     }, []);
 
-    //? g. First Render to get User Location and display weather data
+
+    // * UseEffects and Functions
+
+    //? g. First Render to get User Location and display weather data for that location
     useEffect(() => {
         const initialWeather = async () => {
             if (weather.city) return;
@@ -366,40 +371,13 @@ export const WeatherData = () => {
                                 displayTemperature={displayTemperature}
                             />
 
-
-                            {/* TODO: Turn this into a component */}
-                            <div className="location-weather-details">
-                                <div className="feels-like">
-                                    <p>Feels Like</p>
-                                    <span>
-                                        {displayFeelsLike}{weather.temperatureUnit}
-                                    </span>
-                                </div>
-                                <div className="humidity">
-                                    <p>Humidity</p>
-                                    <span>
-                                        {weather.humidity}{weather.humidityUnit}
-                                    </span>
-                                </div>
-                                <div className="wind-speed">
-                                    <p>Wind Speed</p>
-                                    <span>
-                                        {displayWindSpeed} {units.wind === weather.windSpeedUnit ? weather.windSpeedUnit : 'mph'}
-                                        {/* OR 
-                                            {displayWindSpeed} {units.wind === 'km/h' ? weather.windSpeedUnit : 'mph'} 
-                                        */}
-                                    </span>
-                                </div>
-                                <div className="precipitation">
-                                    <p>Precipitation</p>
-                                    <span>
-                                        {displayPrecipitation} {units.precipitation === weather.precipitationUnit ? weather.precipitationUnit : 'in'}
-                                        {/* OR
-                                            {displayPrecipitation} {units.precipitation === 'mm' ? weather.precipitationUnit : 'in'} 
-                                        */}
-                                    </span>
-                                </div>
-                            </div>
+                            <LocationWeatherDetails
+                                displayFeelsLike={displayFeelsLike}
+                                units={units}
+                                weather={weather}
+                                displayWindSpeed={displayWindSpeed}
+                                displayPrecipitation={displayPrecipitation}
+                            />
 
                             <DailyForecasts 
                                 dailyForecasts={dailyForecast}
@@ -437,41 +415,14 @@ export const WeatherData = () => {
                                         onChange={(day) => setSelectedDay(day.date)}
                                     />
                                 </div>
-                                
-                                <div className="hourly-weather-forecast">
-                                    {getFilteredHourlyForecast().map((hour, index) => {
-                                        return (
-                                            <div className="weather-hour-card" 
-                                                key={index}
-                                                tabIndex={0}
-                                                role='button'
-                                                aria-label={`Hourly forecast for ${hour.time}, ${convertHourlyTemp(hour.temperature)}${weather.temperatureUnit} ${weatherDescriptions(hour.weatherCode)}`}
-                                                onKeyDown={(e) => {
-                                                    // keyboard handlers
-                                                    if (e.key === 'Enter' || e.key === ' ') {
-                                                        e.preventDefault();
-                                                    }
-                                                }}
-                                            >
-                                                <div className="hour">
-                                                    { hour.weatherCode !== undefined && (
-                                                        <img
-                                                            src={weatherIcons[hour.weatherCode] || 'icon-sunny.webp'}
-                                                            alt={weatherDescriptions(hour.weatherCode)}
-                                                            className='hourly-weather-icon'
-                                                        />
-                                                    )}
-                                                    <span className="time">
-                                                        {hour.time}
-                                                    </span>
-                                                </div>
-                                                <span className="hour-temp">
-                                                    {convertHourlyTemp(hour.temperature)}{weather.temperatureUnit}
-                                                </span>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
+
+                                <HourlyForecast
+                                    filteredForecast={getFilteredHourlyForecast()}
+                                    convertHourlyTemp={convertHourlyTemp}
+                                    temperatureUnit={weather.temperatureUnit}
+                                    weatherIcons={weatherIcons}
+                                    weatherDescriptions={weatherDescriptions}
+                                />
                             </div>
                         </div>
                     </div>

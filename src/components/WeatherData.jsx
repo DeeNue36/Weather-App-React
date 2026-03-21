@@ -5,6 +5,7 @@ import { Search } from './Search';
 import { Skeleton } from './Skeleton';
 import { weatherIcons } from '../weatherIcons';
 import { weatherDescriptions } from '../weatherDescriptions';
+import { LocationWeather } from './LocationWeather';
 import { DailyForecasts } from './DailyForecasts';
 import { DaysDropdown } from './DaysDropdown';
 import { ApiError } from './ApiError';
@@ -357,36 +358,14 @@ export const WeatherData = () => {
                     <div className='weather-box'>
                         <div className="weather-daily">
 
-                            {/* TODO: Turn this into a component */}
-                            <div className="location-weather">
-                                <div className="city-and-date">
-                                    <h2 className="location">
-                                    {/* Display user's location initially when the search query is empty */}
-                                    {/* Only display the comma if there is a country */}
-                                        {weather.city}{weather.country && `, ${weather.country}`}  
-                                    </h2>
-                                    <span className="date">
-                                        {weather.dateTime && formatDate(weather.dateTime)}
-                                    </span>
-                                </div>
+                            <LocationWeather 
+                                weather={weather}
+                                weatherIcons={weatherIcons}
+                                weatherDescriptions={weatherDescriptions}
+                                formatDate={formatDate}
+                                displayTemperature={displayTemperature}
+                            />
 
-                                <div className="condition-and-temperature">
-                                    {weather.weatherCode !== undefined && (
-                                        <img
-                                            src={weatherIcons[weather.weatherCode] || 'icon-sunny.webp'}
-                                            alt={weatherDescriptions(weather.weatherCode)}
-                                            className="weather-icon"
-                                        />
-                                    )}
-                                    <div className="temperature">
-                                        {weather.temperature &&
-                                            <h3>
-                                                {displayTemperature}{weather.temperatureUnit}
-                                            </h3>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
 
                             {/* TODO: Turn this into a component */}
                             <div className="location-weather-details">

@@ -279,8 +279,6 @@ export const WeatherData = () => {
                 console.log('Geolocation Failed, using fallback Location');
                 // Show message to the User
                 setErrorMessage('Could not access/understand your location. Showing weather for Houston');
-                // Clear error after a few seconds
-                setTimeout(() => setErrorMessage(''), 5000);
                 console.error('Could not get user location:', error);
                 //Fallback Location
                 fetchWeatherData('Houston');
